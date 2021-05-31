@@ -129,7 +129,7 @@ Now we have made the initial configuration in ThingsBoard and we are now ready t
 
 In the Axis web GUI under *Device View* > *MQTT* configure the host, username/password as well as the *Last will testament* and *connect message*:
 
-![Device Mqtt Settings]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/devicemqttsettings.png)
+![Device Mqtt Settings]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/deviceMqttSettings.png)
 
 Under *Events* configure two events. One for *In* and one for *out*:
 
@@ -140,3 +140,4 @@ Once the camera is configured. Do some motion in front of it to make it perform 
 ![DC In Event]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/dcInEvent.png) | ![DC Out Event]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/dcOutEvent.png)
 
 ThingsBoard has now automatically provisioned a *device* for us since the *data converter* was able to execute successfully and since no device with this *deviceName* existed earlier.
+
