@@ -29,6 +29,6 @@ After all *Assets* has been created, we have this:
 
 On each asset, a *To/From* relationship to create the hierarchy of Building > Floors > Entrance/Exit and then a relation was configured between each entrance/exit and the corresponding camera device.
 
-![Asset Relations]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part2/assetsRelations.png)
+![Asset Relations]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part2/AssetsRelations.png)
 
 Now we have all assets and relations in place we continue in [part 3]({% post_url 2021-05-25-axis-thingsboard-peoplecounting-part3 %}) with the work with the *rule chain* magic.
