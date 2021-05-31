@@ -3,7 +3,7 @@ layout: single
 #classes: wide
 toc: true
 title:  "DIY Word Clock"
-date:   2020-01-11 20:00:00 +0200
+date:   2020-01-11 21:00:00 +0200
 categories: blog
 tags: 
 - IoT
@@ -29,7 +29,7 @@ The hardware consists of:
 
 The size of the led matrix is around 9x9cm which makes each individual letter very small - around 6 mm tall and 5 mm wide.
 
-You *might* be able to cut the plywood with a CNC router with a really tiny endmill, but the forces from the end mill might damage the tiny parts of the letters.
+You *might* be able to cut the plywood with a CNC router with a really tiny end-mill, but the forces from the end mill might damage the tiny parts of the letters.
 
 Tools/knowledge needed:
 

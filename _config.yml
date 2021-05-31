@@ -20,7 +20,7 @@
 
 include: ["_pages"]
 
-title: Johan Holmberg's Blogg
+title: Johan Holmberg's Blog
 email: johan.holmberg83@outlook.com
 timezone: Europe/Stockholm
 description: >- # this means to ignore newlines until "baseurl:"
