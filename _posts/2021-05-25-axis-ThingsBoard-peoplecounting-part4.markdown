@@ -11,7 +11,7 @@ tags:
 - ThingsBoard
 ---
 
-In [part 3]({% post_url 2021-05-25-axis-ThingsBoard-peoplecounting-part3 %}) we configured the rule chain which creates the data we need in this part (4). Now we will focus on the visualization part and build two *dashboards* to visualize the data that we now have access to.
+In [part 3]({% post_url 2021-05-25-axis-thingsboard-peoplecounting-part3 %}) we configured the rule chain which creates the data we need in this part (4). Now we will focus on the visualization part and build two *dashboards* to visualize the data that we now have access to.
 
 The dashboards will be as:
 
@@ -22,13 +22,13 @@ The dashboards will be as:
 
 The first dashboard that I have created is a simple GO/STOP dashboard that shows "GO" in green if *currentOccupancy* is below *maxOccupancy*. If the *currentOccupancy* is above *maxOccupancy* the background turns to red, and it says "STOP" instead. This dashboard fully event based and updates its data in realtime. It is intended to run in full screen on a display/monitor in the store/office.
 
-[![GO](/assets/images/axis-ThingsBoard-peoplecounting-part4/go_stop.png)](/assets/images/axis-ThingsBoard-peoplecounting-part4/go_stop.png)
+[![GO](/assets/images/axis-thingsboard-peoplecounting-part4/go_stop.png)](/assets/images/axis-thingsboard-peoplecounting-part4/go_stop.png)
 
 ### Statistics dashboard
 
 The statistics dashboard shows a map, in which all the buildings are mapped based on the longitude/latitude metadata added on the *building asset*. The number above the building icon is the current occupancy number for all floors combined in that building.
 
-[![GO](/assets/images/axis-ThingsBoard-peoplecounting-part4/map.png)](/assets/images/axis-ThingsBoard-peoplecounting-part4/map.png)
+[![GO](/assets/images/axis-thingsboard-peoplecounting-part4/map.png)](/assets/images/axis-thingsboard-peoplecounting-part4/map.png)
 
 When clicking a building (we only have one in this example), a new dashboard popups in which I have added some charts and cards to display statistics on the data we received from the devices, and data that we created thru the rule chains.
 
@@ -36,7 +36,7 @@ This dashboard also shows if devices are online/offline based on their LWT MQTT 
 
 We can also see how the *relation tree* looks like, all the way from the building > floor > entrance > device which helps us to verify that all relations are configured correctly.
 
-[![GO](/assets/images/axis-ThingsBoard-peoplecounting-part4/details.png)](/assets/images/axis-ThingsBoard-peoplecounting-part4/details.png)
+[![GO](/assets/images/axis-thingsboard-peoplecounting-part4/details.png)](/assets/images/axis-thingsboard-peoplecounting-part4/details.png)
 
 ### Conclusion
 

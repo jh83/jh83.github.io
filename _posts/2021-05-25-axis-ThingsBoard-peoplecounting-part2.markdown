@@ -11,7 +11,7 @@ tags:
 - ThingsBoard
 ---
 
-In [Part 1]({% post_url 2021-05-25-axis-ThingsBoard-peoplecounting-part1 %}) of this blog series, we configured the Axis camera and the ThingsBoard platform so that ThingsBoard successfully received People Counter data from the Axis camera which then was saved on the *device* in ThingsBoard.
+In [Part 1]({% post_url 2021-05-25-axis-thingsboard-peoplecounting-part1 %}) of this blog series, we configured the Axis camera and the ThingsBoard platform so that ThingsBoard successfully received People Counter data from the Axis camera which then was saved on the *device* in ThingsBoard.
 
 In this part 2 of this blog, I will show how we can utilize *Assets* as a *digital twin* to build a relation between the building, floors, entrance/exit and the actual camera device in ThingsBoard.
 
@@ -24,10 +24,10 @@ In the example above, since we have two entrances/exists for each floor, in orde
 What we also want to do is to create a *asset* for the building itself, to which we can link all floors. With these assets and relations created, we now have a relation between the building > floors > entrance/exit > camera devices.
 
 After all *Assets* has been created, we have this:
-![Assets](/assets/images/axis-ThingsBoard-peoplecounting-part2/assets.png)
+![Assets](/assets/images/axis-thingsboard-peoplecounting-part2/assets.png)
 
 On each asset, a *To/From* relationship to create the hierarchy of Building > Floors > Entrance/Exit and then a relation was configured between each entrance/exit and the corresponding camera device.
 
-![Asset Relations](/assets/images/axis-ThingsBoard-peoplecounting-part2/assetsRelations.png)
+![Asset Relations](/assets/images/axis-thingsboard-peoplecounting-part2/assetsRelations.png)
 
-Now we have all assets and relations in place we continue in [part 3]({% post_url 2021-05-25-axis-ThingsBoard-peoplecounting-part3 %}) with the work with the *rule chain* magic.
+Now we have all assets and relations in place we continue in [part 3]({% post_url 2021-05-25-axis-thingsboard-peoplecounting-part3 %}) with the work with the *rule chain* magic.

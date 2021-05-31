@@ -11,7 +11,7 @@ tags:
 - ThingsBoard
 ---
 
-In [part 2]({% post_url 2021-05-25-axis-ThingsBoard-peoplecounting-part2 %}) of this blog series, we configured the assets and relation between those which we in this part 3 will work with *rule chains* to create the data flow and data aggregation needed.
+In [part 2]({% post_url 2021-05-25-axis-thingsboard-peoplecounting-part2 %}) of this blog series, we configured the assets and relation between those which we in this part 3 will work with *rule chains* to create the data flow and data aggregation needed.
 
 With the help of rule chains, we will create the functionality needed to create the floor/building data aggregation as well as calculate other statistics that we want the system to provide us with.
 
@@ -24,7 +24,7 @@ The rule chain which I have created for this consists of multiple parts. The mai
 Let's start with the rule chain which is event based.
 
 The first part of this event based rule chain is a filter that validates that the data that triggers this rule cain is of type *telemetry*. The second node is to validate that the device type is what we expect, so that we don't try to run the next steps on other devices:
-[![Event part1](/assets/images/axis-ThingsBoard-peoplecounting-part3/EventPart1.png)](/assets/images/axis-ThingsBoard-peoplecounting-part3/EventPart1.png)
+[![Event part1](/assets/images/axis-thingsboard-peoplecounting-part3/EventPart1.png)](/assets/images/axis-thingsboard-peoplecounting-part3/EventPart1.png)
 
 In the second part of this event based rule chain we start to add some data. What we do here is to create the data needed to later be able to calculate how many percent of total floor In/Outs that uses this particular Entrance:
 
@@ -33,7 +33,7 @@ In the second part of this event based rule chain we start to add some data. Wha
 * Run a script that adds the current *totalInOutCount* to the previous *totalInOutCount*
 * Save this to the database.
 
-[![Event part2](/assets/images/axis-ThingsBoard-peoplecounting-part3/EventPart2.png)](/assets/images/axis-ThingsBoard-peoplecounting-part3/EventPart2.png)
+[![Event part2](/assets/images/axis-thingsboard-peoplecounting-part3/EventPart2.png)](/assets/images/axis-thingsboard-peoplecounting-part3/EventPart2.png)
 
 In the third part we do:
 
@@ -42,7 +42,7 @@ In the third part we do:
 * In the script node, we adjust the output by taking the previous telemetry and incrementing/decrementing those depending on if the camera counted In (1) or Out (-1). We also make sure that if the *currentOccupancy* is 0 and the camera sends "-1", the currentOccupancy should remain 0, and not be -1 on the floor level.
 * Next we save this to the database
 
-[![Event part3](/assets/images/axis-ThingsBoard-peoplecounting-part3/EventPart3.png)](/assets/images/axis-ThingsBoard-peoplecounting-part3/EventPart3.png)
+[![Event part3](/assets/images/axis-thingsboard-peoplecounting-part3/EventPart3.png)](/assets/images/axis-thingsboard-peoplecounting-part3/EventPart3.png)
 
 The last step in this rule chain is used to perform an action of the *currentOccupancy* exceeds the *maxOccupancy* which is configured on each floor asset. If the occupancy exceeds the maximum allowed number then we can trigger an event like sending an email or REST API call to an external system to create a incident or other things.
 
@@ -50,7 +50,7 @@ The last step in this rule chain is used to perform an action of the *currentOcc
 * If the *currentOccupancy* is above the configured threshold then we create a alarm within ThingsBoard, we then have a script node which formats the body to be used in the REST API Call against the external service, and then perform the actual REST API call.
 * If the *currentOccupancy* is below the configured threshold, then we will clear the existing alarm in ThingsBoard. We also format the REST body in the script node so that it thru the REST API call can notify the external system that the *currentOccupancy* now is below *maxOccupancy*.
 
-[![Event part4](/assets/images/axis-ThingsBoard-peoplecounting-part3/EventPart4.png)](/assets/images/axis-ThingsBoard-peoplecounting-part3/EventPart4.png)
+[![Event part4](/assets/images/axis-thingsboard-peoplecounting-part3/EventPart4.png)](/assets/images/axis-thingsboard-peoplecounting-part3/EventPart4.png)
 
 ## Interval based flows
 
@@ -62,7 +62,7 @@ The event based rule chain describes above updates the data on the entrance leve
 
 To do this, I have created a *aggregate latest* which runs every 60 seconds that gets all floors related to a building and then sums the *currentOccupancy* and *totalVisitors* for all floors and then saves it to the building asset:
 
-[![Building aggregation](/assets/images/axis-ThingsBoard-peoplecounting-part3/floorBuildingAggregation.png)](/assets/images/axis-ThingsBoard-peoplecounting-part3/floorBuildingAggregation.png)
+[![Building aggregation](/assets/images/axis-thingsboard-peoplecounting-part3/floorBuildingAggregation.png)](/assets/images/axis-thingsboard-peoplecounting-part3/floorBuildingAggregation.png)
 
 ### Calculate entrance utilization in percent
 
@@ -74,7 +74,7 @@ In this blog post we have one main and one secondary entrance for each floor. We
 * In the "originator attributes" we get the *totalInOutCount* for this particular entrance asset.
 * And in the script node, we now can calculate the each entrance *entranceUtilizationPercent* by taking the entrance *totalInOutCount* and device it with the floor *totalInOutCount*.
 
-[![Entrance Utilization](/assets/images/axis-ThingsBoard-peoplecounting-part3/entranceUtilization.png)](/assets/images/axis-ThingsBoard-peoplecounting-part3/entranceUtilization.png)
+[![Entrance Utilization](/assets/images/axis-thingsboard-peoplecounting-part3/entranceUtilization.png)](/assets/images/axis-thingsboard-peoplecounting-part3/entranceUtilization.png)
 
 ### Reset all counters to zero
 
@@ -89,10 +89,10 @@ The nodes from left to right:
 * Next we verify if *totalVisitors* exists.
 * And lastly we write *0* for *currentOccupancy, totalVisitors* and *totalInOutCount* as time series data into the database.
 
-[![Reset counters](/assets/images/axis-ThingsBoard-peoplecounting-part3/resetBuilding.png)](/assets/images/axis-ThingsBoard-peoplecounting-part3/resetBuilding.png)
+[![Reset counters](/assets/images/axis-thingsboard-peoplecounting-part3/resetBuilding.png)](/assets/images/axis-thingsboard-peoplecounting-part3/resetBuilding.png)
 
 Note: If we were using the builtin functionality in the camera to send the data on a 15 minutes interval, then the camera would reset it's counters at 00:00 automatically, but in this blog post we are using *Events* instead since we wanted a *real time* solution.
 
 ### Conclusion
 
-In this part we added all the *intelligence* to the solution to add the functionality and calculate the data which we need in [part 4]({% post_url 2021-05-25-axis-ThingsBoard-peoplecounting-part4 %}) where we will build a dashboard for monitoring.
+In this part we added all the *intelligence* to the solution to add the functionality and calculate the data which we need in [part 4]({% post_url 2021-05-25-axis-thingsboard-peoplecounting-part4 %}) where we will build a dashboard for monitoring.
