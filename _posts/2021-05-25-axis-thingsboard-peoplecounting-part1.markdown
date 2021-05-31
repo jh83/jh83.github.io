@@ -141,3 +141,4 @@ Once the camera is configured. Do some motion in front of it to make it perform 
 
 ThingsBoard has now automatically provisioned a *device* for us since the *data converter* was able to execute successfully and since no device with this *deviceName* existed earlier.
 
+
