@@ -140,5 +140,3 @@ Once the camera is configured. Do some motion in front of it to make it perform 
 ![DC In Event]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/dcInEvent.png) | ![DC Out Event]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/dcOutEvent.png)
 
 ThingsBoard has now automatically provisioned a *device* for us since the *data converter* was able to execute successfully and since no device with this *deviceName* existed earlier.
-
-In [part 2]({% post_url 2021-05-25-axis-thingsboard-peoplecounting-part2 %}) of this blog, we will focus on using *assets* to be able to support statistics and data aggregation when we have multiple entrances/exists/floors.
