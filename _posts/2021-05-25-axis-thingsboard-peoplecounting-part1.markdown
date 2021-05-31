@@ -119,24 +119,25 @@ return result;
 
 Then save it:
 
-![DataConverter](/assets/images/axis-thingsboard-peoplecounting-part1/dataconverter.png)
+![DataConverter]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/dataconverter.png)
 
 Next we crate a new *integration*. Give it a good name, select MQTT, select the *data converter* that we created earlier, enter the MQTT broker HOST, port, set a random *Client ID*, provide broker username/password and then under *Topic Filters* add *axis/+/+*. Enable debug and then save the integration:
 
-![Mqtt_Integration](/assets/images/axis-thingsboard-peoplecounting-part1/mqtt_integration.png)
+![Mqtt_Integration]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/mqtt_integration.png)
 
 Now we have made the initial configuration in ThingsBoard and we are now ready to receive data from the Axis device. Now go to the Axis device and configure the MQTT settings on the camera. There are two parts that needs to be configured. One is the device level MQTT settings, and then *Events* need to be configured to trigger a MQTT message for each in/out count.
 
 In the Axis web GUI under *Device View* > *MQTT* configure the host, username/password as well as the *Last will testament* and *connect message*:
 
-![Device Mqtt Settings](/assets/images/axis-thingsboard-peoplecounting-part1/deviceMqttSettings.png)
+![Device Mqtt Settings]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/deviceMqttSettings.png)
 
 Under *Events* configure two events. One for *In* and one for *out*:
 
-![Device Mqtt Event](/assets/images/axis-thingsboard-peoplecounting-part1/deviceMqttEvent.png)
+![Device Mqtt Event]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/deviceMqttEvent.png)
 
 Once the camera is configured. Do some motion in front of it to make it perform an *in* or *out* count. After that, go to ThingsBoard and open the data converter and go to the Events tab. Since we enabled debugging earlier, we should now see that we have received a package and that the *data converter* transformed it as an *output*:
 
-![DC In Event](/assets/images/axis-thingsboard-peoplecounting-part1/dcInEvent.png) | ![DC Out Event](/assets/images/axis-thingsboard-peoplecounting-part1/dcOutEvent.png)
+![DC In Event]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part1/dcInEvent.png) | ![DC Out Event](/assets/images/axis-thingsboard-peoplecounting-part1/dcOutEvent.png)
 
 ThingsBoard has now automatically provisioned a *device* for us since the *data converter* was able to execute successfully and since no device with this *deviceName* existed earlier.
+
