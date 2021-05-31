@@ -17,6 +17,7 @@ This blog series aims at showing how easy it can be to set up a people/visitor c
 
 In retail, Visitor/People counting statistics has been an important KPI for a long time. During the Covid-19 pandemic I have - in my professional work life - noticed a growing need for solutions that tracks the current occupancy to make sure that no violations for the maximum number of simultaneously visitors are made. People counting statistics are in many cases also important to justify the need of office space or for public locations which are granted funding based on the number of visitors.
 
+<!--
 ## Introduction
 
 In this blog series I will show how one can create a solution that can receive data from multiple people counting cameras, and have a *data flow* around it to be able to aggregate data and create statistics around the data for which the camera device it self doesn't report.
@@ -119,7 +120,7 @@ return result;
 
 Then save it:
 
-<!--![DataConverter](/assets/images/axis-thingsboard-peoplecounting-part1/dataconverter.png)
+![DataConverter](/assets/images/axis-thingsboard-peoplecounting-part1/dataconverter.png)
 
 Next we crate a new *integration*. Give it a good name, select MQTT, select the *data converter* that we created earlier, enter the MQTT broker HOST, port, set a random *Client ID*, provide broker username/password and then under *Topic Filters* add *axis/+/+*. Enable debug and then save the integration:
 
