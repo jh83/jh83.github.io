@@ -24,6 +24,7 @@ In the example above, since we have two entrances/exists for each floor, in orde
 What we also want to do is to create a *asset* for the building itself, to which we can link all floors. With these assets and relations created, we now have a relation between the building > floors > entrance/exit > camera devices.
 
 After all *Assets* has been created, we have this:
+
 ![Assets](/assets/images/axis-thingsboard-peoplecounting-part2/assets.png)
 
 On each asset, a *To/From* relationship to create the hierarchy of Building > Floors > Entrance/Exit and then a relation was configured between each entrance/exit and the corresponding camera device.
