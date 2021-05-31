@@ -118,7 +118,7 @@ return result;
 {% endhighlight %}
 
 Then save it:
-![DataConverter](/assets/images/axis-ThingsBoard-peoplecounting-part1/dataconverter.png)
+![DataConverter](/assets/images/axis-thingsboard-peoplecounting-part1/dataconverter.png)
 
 Next we crate a new *integration*. Give it a good name, select MQTT, select the *data converter* that we created earlier, enter the MQTT broker HOST, port, set a random *Client ID*, provide broker username/password and then under *Topic Filters* add *axis/+/+*. Enable debug and then save the integration:
 
