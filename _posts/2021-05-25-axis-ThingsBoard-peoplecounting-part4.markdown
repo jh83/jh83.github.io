@@ -47,3 +47,5 @@ My idea when creating this series was to show how easy it can be to build a *IoT
 In this article we configured the Axis cameras to send it's data on MQTT as *Event's*. The Axis devices however has built in functionality to send its data on a interval instead of realtime. When using intervals, Axis will keep the history on the device it self until it know that it successfully was received by the recipient.
 
 ThingsBoard as an IoT platform can handle a lot of different use-cases. This specific use-case can also be expanded to contain data from more sources/devices. - Lets say that you want to track Co2 or sound levels in the same Office, then it might be interesting to know how many people it was in the office/room when the Co2 went from good to bad for example.
+
+I hope that you found this blog series interesting!
