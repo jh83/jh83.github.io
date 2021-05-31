@@ -89,7 +89,7 @@ The nodes from left to right:
 * Next we verify if *totalVisitors* exists.
 * And lastly we write *0* for *currentOccupancy, totalVisitors* and *totalInOutCount* as time series data into the database.
 
-[![Reset counters]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part3/resetBuilding.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part3/resetBuilding.png)
+[![Reset counters]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part3/ResetBuilding.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part3/ResetBuilding.png)
 
 Note: If we were using the builtin functionality in the camera to send the data on a 15 minutes interval, then the camera would reset it's counters at 00:00 automatically, but in this blog post we are using *Events* instead since we wanted a *real time* solution.
 
