@@ -2,7 +2,7 @@
 layout: single
 #classes: wide
 toc: true
-title:  "Axis - ThingsBoard People Counter - Introduction"
+title:  "Introduction - People Counter Axis/ThingsBoard"
 date:   2021-05-25 13:00:00 +0200
 categories: blog
 tags: 
@@ -26,9 +26,11 @@ Functionality and statistics that I will cover in this blog series are:
 * Current occupancy on a per-floor basis with support for multiple entrances/exits per floor.
 * Max Occupancy warning if the current occupancy count exceeds the configured threshold.
 * Total visitors per day/hour statistics.
-* Per entrance/exit statistics. Percent in/outs between the entrances/exits on each floor?
+* Per entrance/exit statistics. Percent in/outs between the entrances/exits on each floor.
 
 ## Pre-Req
+
+### Axis - Cameras
 
 In this blog series we will use the "3D" people counter camera P8815-2 from [Axis Solutions](https://www.axis.com/sv-se/products/axis-p8815-2-3d-people-counter){:target="_blank"}. This camera has two camera lenses which makes it less prone to shadows and other things that otherwise can cause miscounts.
 
@@ -36,17 +38,19 @@ This camera comes with a builtin [ACAP](https://www.axis.com/products/analytics/
 
 The People Counting ACAP provides an API for the People Count data, and the ACAP also holds the functionality to post this data to a remote server on a set time interval. More information on the Axis People Counter solution can be found [here](https://www.axis.com/products/axis-people-counter){:target="_blank"}.
 
-On the receiving end, we will use [ThingsBoard](https://ThingsBoard.io){:target="_blank"} as the IoT Platform. ThingsBoard is a versatile IoT platform that thru *integrations* and *data converters* makes it possible to receive and decode data from almost all IoT sources. It is a modern platform which can scale extremely well when it comes to message thruput and different sizing examples can be found on the ThingsBoard website.
+### ThingsBoard
+
+On the receiving end, we will use [ThingsBoard](https://ThingsBoard.io){:target="_blank"} as the IoT Platform. ThingsBoard is a versatile IoT platform that thru *integrations* and *data converters* makes it possible to receive and decode data from almost *all* IoT sources. It is a modern platform which can scale extremely well when it comes to message thruput and different sizing examples can be found on the ThingsBoard website.
 
 Information on how to deploy ThingsBoard are all described in detail on the ThingsBoard web site, so I will not cover the installation of ThingsBoard in this blog. - You can either install ThingsBoard your self, or try the online trial of the professional edition which I will be using in this blog series.
 
-In this setup we will configure the Axis camera to send it's data to a *MQTT Broker* every time it detects a person passing in or out over it's virtual "detection line". ThingsBoard will be configured to connect to the same MQTT broker, and subscribe to the topics to which the camera publishes it's messages.
+In this setup we will configure the Axis camera to send it's data to a *MQTT Broker* every time it detects a person passing in or out over it's virtual "detection line". ThingsBoard will be configured to connect to the same MQTT broker and subscribe to the topics to which the camera publishes it's messages.
 
-Axis can also send the people counting data on HTTPS, but in this blog series we will use MQTT instead since MQTT has something called "Last Will Message". The *LWT/LWM* is something that the MQTT client informs the MQTT about when the connection is created, and if the connectivity between the client (camera) and the MQTT broker is lost, then the MQTT broker will publish this LWT/LWM message. - This makes it possible for us to detect in near realtime if a device goes offline.
+Axis can also be configured send the people counting data on HTTPS, but in this blog series we will use MQTT instead since MQTT has something called "Last Will Message". The *LWT/LWM* is something that the MQTT client informs the MQTT broker about when the connection is established, and if the connectivity between the client (camera) and the MQTT broker is lost, then the MQTT broker will publish this LWT/LWM message. This makes it possible for us to detect in near realtime if a device goes offline by configuring ThingsBoard to listen to this topic.
 
-In ThingsBoard, apart from creating a *integration*, we will also create a *data converter*. A data converter is a block of javascript code that is executed by the *integration* for each incoming package that is sent to the integration. The idea with the data converter is to transform the incoming JSON message to an format which the *rule chain* in ThingsBoard can handle and later write the attributes and/or telemetry to the database.
+Apart from creating a *integration* ThingsBoard, we will also create a *data converter*. A data converter is a piece of javascript code that is executed by the *integration* for each incoming package that is received by the integration. The idea with the data converter is to transform the incoming JSON message to an format which the *rule chain* in ThingsBoard can handle and later write the attributes and/or telemetry to the database.
 
-The *rule chain* in ThingsBoard is similar to *Node-RED*, and can be used to apply all kinds of logic. In this blog series we will create a custom *rule-chain* that performs aggregation of the data to make it possible to have multiple entrances/exists/floors for a building and see the aggregated results from multiple people counting cameras on one object.
+The *rule chain* in ThingsBoard is similar to *Node-RED* and can be used to apply all kinds of logic. In this blog series we will create a custom *rule-chain* that performs aggregation of the data to make it possible to have multiple entrances/exists/floors for a building and see the aggregated results from multiple people counting cameras on one object.
 
 ## Lets get started
 

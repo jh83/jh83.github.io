@@ -2,7 +2,7 @@
 layout: single
 #classes: wide
 toc: true
-title:  "Axis - ThingsBoard People Counter - Visualization"
+title:  "Visualization - People Counter Axis/ThingsBoard"
 date:   2021-05-29 17:00:00 +0200
 categories: blog
 tags: 
@@ -20,7 +20,7 @@ The dashboards will be as:
 
 ### GO/STOP dashboard
 
-The first dashboard that I have created is a simple GO/STOP dashboard that shows "GO" in green if *currentOccupancy* is below *maxOccupancy*. If the *currentOccupancy* is above *maxOccupancy* the background turns to red, and it says "STOP" instead. This dashboard fully event based and updates its data in realtime. It is intended to run in full screen on a display/monitor in the store/office.
+The first dashboard that I have created is a simple GO/STOP dashboard that shows "GO" in green if *currentOccupancy* is below *maxOccupancy*. If the *currentOccupancy* is above *maxOccupancy* the background turns to red, and it says "STOP" instead. This dashboard fully event based and updates its data in realtime. It is a web page which is intended to run in full screen on a display/monitor in the store/office.
 
 [![GO]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part4/go_stop.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part4/go_stop.png)
 
@@ -42,10 +42,12 @@ We can also see how the *relation tree* looks like, all the way from the buildin
 
 This was the final part in this blog series.
 
-My idea when creating this series was to show how easy it can be to build a *IoT* solution with components that are available *out of the box*, and that it doesn't need to be "built from scratch".
+My idea when creating this series was to show how easy it can be to build a *IoT* solution with components that are available "out of the box".
 
-In this article we configured the Axis cameras to send it's data on MQTT as *Event's*. The Axis devices however has built in functionality to send its data on a interval instead of realtime. When using intervals, Axis will keep the history on the device it self until it know that it successfully was received by the recipient.
+In this article we configured the Axis cameras to send it's data on MQTT as *Event's*. The Axis devices however has built in functionality to send its data on a interval instead of realtime. When using intervals, Axis will keep the history on the device it self until it know that it successfully was received by the recipient. In this MQTT approach each In/Out count is only sent once and will not be resent if lost.
 
-ThingsBoard as an IoT platform can handle a lot of different use-cases. This specific use-case can also be expanded to contain data from more sources/devices. - Lets say that you want to track Co2 or sound levels in the same Office, then it might be interesting to know how many people it was in the office/room when the Co2 went from good to bad for example.
+This specific use-case can also be expanded to contain data from more sources/devices. - Lets say that you want to track Co2 or sound levels in the same Office, then it might be interesting to know how many people it was in the office/room when the Co2 went from good to bad for example.
+
+ThingsBoard as an IoT platform can handle a lot of different use-cases since it can integrate with HTTP, MQTT, Azure, AWS and with the help of gateways for MODBUS, SNMP etc.
 
 I hope that you found this blog series interesting!
