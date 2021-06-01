@@ -86,6 +86,12 @@ defaults:
 #   - vendor/gems/
 #   - vendor/ruby/
 
+analytics:
+  provider: "google-gtag"
+  google:
+    tracking_id: "G-NNRFMRE3D5"
+    anonymize_ip: false # default
+
 footer:
   links:
     - label: "GitHub"
