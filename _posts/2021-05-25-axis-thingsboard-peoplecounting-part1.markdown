@@ -34,7 +34,7 @@ Functionality and statistics that I will cover in this blog series are:
 
 In this blog series we will use the "3D" people counter camera P8815-2 from [Axis Solutions](https://www.axis.com/sv-se/products/axis-p8815-2-3d-people-counter){:target="_blank"}. This camera has two camera lenses which makes it less prone to shadows and other things that otherwise can cause miscounts.
 
-This camera is shipped with the People Counter functionality built-in to the firmware itself, but People Counter and other [ACAP:s](https://www.axis.com/products/analytics/acap) can also be installed on other Axis camera devices as well if needed.
+This camera is shipped with the People Counter functionality built-in to the firmware itself, but People Counter and other [ACAP:s](https://www.axis.com/products/analytics/acap) can be installed on other Axis camera devices as well if needed.
 
 The People Counting ACAP provides an API for the People Count data, and the ACAP also holds the functionality to post this data to a remote server on a set time interval. More information on the Axis People Counter solution can be found [here](https://www.axis.com/products/axis-people-counter){:target="_blank"}.
 
