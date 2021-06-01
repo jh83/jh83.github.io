@@ -15,6 +15,8 @@ In [Part 1]({% post_url 2021-05-25-axis-thingsboard-peoplecounting-part1 %}) of 
 
 In this part 2 of this blog, I will show how we can utilize *Assets* as a *digital twin* to build a relation between the building, floors, entrance/exit and the actual camera device in ThingsBoard.
 
+## Asset usage
+
 By using *assets* along with *relations* in ThingsBoard, we can control how the *rule chain* should aggregate data from/to each *device* and *asset*. *Assets* also removes the need of being bound to one specific device since the platform will copy all data from the device to the parent asset. This means that we can replace the device without loosing any historic data bound to that specific device.
 
 Lets start with an example: We have a building named "HQ", in this building we have 2 floors. Each floor has one main entrance/exit as well as one secondary entrance/exit. To have full coverage here, we would need 4 cameras, one for each entrance/exit and each floor.
@@ -26,6 +28,8 @@ What we also want to do is to create a *asset* for the building itself, to which
 After all *Assets* has been created, we have this:
 
 ![Assets]({{ BASE_PATH }}/assets/images/axis-thingsboard-peoplecounting-part2/assets.png)
+
+## Asset relations
 
 On each asset, a *To/From* relationship to create the hierarchy of Building > Floors > Entrance/Exit and then a relation was configured between each entrance/exit and the corresponding camera device.
 
