@@ -2,7 +2,7 @@
 layout: single
 #classes: wide
 toc: true
-title:  "Assets and Relations - People Counter Axis/ThingsBoard"
+title:  "Part 2 - Assets and Relations - People Counter Axis/ThingsBoard"
 date:   2021-05-29 15:00:00 +0200
 categories: blog
 tags: 

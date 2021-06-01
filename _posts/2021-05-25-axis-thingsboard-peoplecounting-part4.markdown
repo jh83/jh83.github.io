@@ -2,7 +2,7 @@
 layout: single
 #classes: wide
 toc: true
-title:  "Visualization - People Counter Axis/ThingsBoard"
+title:  "Part 4 - Visualization - People Counter Axis/ThingsBoard"
 date:   2021-05-29 17:00:00 +0200
 categories: blog
 tags: 

@@ -2,7 +2,7 @@
 layout: single
 #classes: wide
 toc: true
-title:  "Rule Chains - People Counter Axis/ThingsBoard"
+title:  "Part 3 - Rule Chains - People Counter Axis/ThingsBoard"
 date:   2021-05-29 16:00:00 +0200
 categories: blog
 tags: 

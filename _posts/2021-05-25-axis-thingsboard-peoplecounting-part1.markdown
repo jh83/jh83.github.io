@@ -2,7 +2,7 @@
 layout: single
 #classes: wide
 toc: true
-title:  "Introduction - People Counter Axis/ThingsBoard"
+title:  "Part 1 - Introduction - People Counter Axis/ThingsBoard"
 date:   2021-05-25 13:00:00 +0200
 categories: blog
 tags: 
