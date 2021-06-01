@@ -89,7 +89,7 @@ defaults:
 analytics:
   provider: "google-gtag"
   google:
-    tracking_id: "G-NNRFMRE3D5"
+    tracking_id: "G-48WDLF304V"
     anonymize_ip: false # default
 
 footer:
