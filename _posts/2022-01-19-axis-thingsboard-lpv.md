@@ -146,11 +146,11 @@ Two different dashboards were created to visualize the data. One dashboard is co
 
 The Admin dashboard also provides an interface for the "administrator" to manually set a specific vehicle as in/out if any miscount would occur in the system/camera. The Admin dashboard also displays per-vehicle statistics. 
 
-Admin dashboard - City view. Displays all assets of type *parkingLocation* based on their latitude/longitude attributes. Shows the name, free spaces and the total amount of spaces in the label:
+Admin dashboard - City view. Displays all assets of type *parkingLocation* based on their latitude/longitude attributes. The map shows the name, free spaces and the total amount of spaces as *labels* for each location:
 
 [![City_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/cityview.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/cityview.png)
 
-Admin Dashboard - Garage view. Shown after clicking an icon in the *city view*. Show a graph of the space utilization in the selected *parkingLocation* asset as well as a list of all the *vehicle* assets related to the *parkingLocation*. The list shows "parked" status for each vehicle asset:
+Admin Dashboard - Garage view. Shown after clicking "any" of the icons in the *city view*. This view shows a graph of the space utilization in the selected *parkingLocation* asset as well as a list of all the *vehicle* assets related to the *parkingLocation*. The list shows "parked" status for each vehicle asset:
 
 [![Garage_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/garageview.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/garageview.png)
 
@@ -158,7 +158,7 @@ Admin Dashboard - Car view. This is shown after double clicking a *vehicle* in f
 
 [![Car_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/carview.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/carview.png)
 
-Public Dashboard. A simple HTML page which is accessible thru a uniq URL. This page shows the current amount of free parking spaces and is intended to be used by staff who want to verify if there are any available parking spaces before they enter the garage.
+Public Dashboard. A simple HTML page which is accessible thru a uniq URL. This page shows the current amount of free parking spaces and is intended to be used by staff who want to verify if there are any available parking spaces before they enter the garage:
 
 [![Public_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/publicview.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/publicview.png)
 
