@@ -17,7 +17,7 @@ Let's build a camera based parking solution!
 
 In previous blogs, I have shown how Axis cameras and their *people counting* capabilities can be used along with ThingsBoard to build a complete people counting analytics solution.
 
-In this blog we will instead work with Axis and their [License Plate Verifier](https://www.axis.com/products/axis-license-plate-verifier) capabilities and build a solution in [ThingsBoard](https://ThingsBoard.io) which will display number of used/free parking spaces based on the license plate readings that the Axis camera provides.
+In this blog we will instead work with Axis and their [License Plate Verifier](https://www.axis.com/products/axis-license-plate-verifier){:target="_blank"} capabilities and build a solution in [ThingsBoard](https://ThingsBoard.io){:target="_blank"} which will display number of used/free parking spaces based on the license plate readings that the Axis camera provides.
 
 ThingsBoard is usually considered as an *IoT platform*, and in this scenario we will use the Axis camera as a *IoT Device* which sends its license plate readings in JSON format, and each vehicle that should be counted by the system will be considered as an *Asset* in ThingsBoard.
 
