@@ -11,6 +11,8 @@ tags:
 - ThingsBoard
 ---
 
+Let's build a camera based parking solution!
+
 ## Introduction
 
 In previous blogs, I have shown how Axis cameras and their *people counting* capabilities can be used along with ThingsBoard to build a complete people counting analytics solution.
@@ -101,7 +103,7 @@ A HTTP integration is created which automatically generates a URL which we enter
 
 Important here is that we do not want the integration to automatically create device/assets, since we want to control which vehicles we have manually:
 
-![HTTP_Integration]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/integration.png)
+[![HTTP_Integration]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/integration.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/integration.png)
 
 ### Data converter
 
@@ -109,7 +111,7 @@ In our data converter, we capture the things which are important for us. The "pl
 
 Note that we have defined "assetName" and "assetType" instead of "deviceName" and "deviceType". The reason for this is that we want ThingsBoard to put the data onto the vehicle *asset* instead of a *device*.
 
-![Data_Converter]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/dataconverter.png)
+[![Data_Converter]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/dataconverter.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/dataconverter.png)
 
 ### Assets
 
@@ -122,7 +124,7 @@ After the assets are created, then a *relation* is defined between "Garage 1" an
 
 What we also need to define on the "parkingLocation" assets is an attribute named "parkingSpaces" which tells how many parking spaces we have in that particular *parkingLocation*. - In this example I have set this number to 5 since that is the number of parking spaces that we have access to in "Garage 1".  
 
-![Assets]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/assets.png)
+[![Assets]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/assets.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/assets.png)
 
 ### Rule chain
 
@@ -136,7 +138,7 @@ In short, we do the following:
 * *Script* checks if the new value is different from the old value. We do this check since we are running on an interval (60 seconds) and we only want to write to the database if there is a change.
 * *Save Timeseries* performs a database write for the *availableParkingSpaces* value onto the "Garage 1" asset.
 
-![Rule_chain]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/rulechain.png)
+[![Rule_chain]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/rulechain.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/rulechain.png)
 
 ### Dashboards
 
@@ -146,19 +148,19 @@ The Admin dashboard also provides an interface for the "administrator" to manual
 
 Admin dashboard - City view:
 
-![City_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/cityview.png)
+[![City_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/cityview.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/cityview.png)
 
 Admin Dashboard - Garage view:
 
-![City_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/garageview.png)
+[![Garage_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/garageview.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/garageview.png)
 
 Admin Dashboard - Car view:
 
-![Car_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/carview.png)
+[![Car_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/carview.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/carview.png)
 
 Public Dashboard
 
-![Public_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/publicview.png)
+[![Public_View]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/publicview.png)]({{ BASE_PATH }}/assets/images/axis-thingsboard-lpv/publicview.png)
 
 ## Conclusion
 
