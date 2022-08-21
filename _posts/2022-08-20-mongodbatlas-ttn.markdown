@@ -46,7 +46,7 @@ Let's get started!
 
 We need to create a cluster which will host our database:
 
-![Create Cluster]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateCluster.png)
+[![Create Cluster]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateCluster.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateCluster.png)
 
 #### Create database and collections
 
@@ -54,11 +54,11 @@ Create the database which will hold our data. During database creation, we also 
 
 Time series collections requires us manually specify the timeField:
 
-![Create Database]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateDatabase.png)
+[![Create Database]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateDatabase.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateDatabase.png)
 
 We need one more collection to hold our "device twin" data. This collection will hold a *document* for each device, and the document will contain the *desired* and *reported* device settings:
 
-![Additional Collection]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/AdditionalCollection.png)
+[![Additional Collection]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/AdditionalCollection.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/AdditionalCollection.png)
 
 Once the *deviceTwins* collection has been created, then we insert a new *document* into the database with a *_id* that matches the LoRaWAN device ID in The Things Network
 
