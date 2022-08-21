@@ -2,7 +2,7 @@
 layout: single
 #classes: wide
 toc: true
-title:  "Sending camera "
+title:  "Integrating The Things Network with MongoDB Atlas"
 date:   2022-08-20 17:00:00 +0200
 categories: blog
 tags: 
