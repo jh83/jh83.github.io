@@ -37,9 +37,9 @@ The Things Network (TTN) will provide us with the services related to LoRaWAN. I
 
 #### LoRaWAN - End Device
 
-The end-device used is a RAK3172 module from RAKwireless. This module contains a STM32WL chip along with a SEMTECH LoRaWAN modem. The RAK3172 firmware can be developed and flashed "thru" Arduino and there is no need for an additional micro controller.
+The end-device used is a RAK3172 module from RAKwireless. This module contains a STM32WL chip along with a SEMTECH LoRaWAN modem. The firmware for RAK3172 can be developed and flashed "thru" Arduino and there is no need for an additional micro controller.
 
-There are also two LED:s connected to the RAK3172 which can be individually controlled via downlink messages.
+There two LED:s connected to the RAK3172 which can be individually controlled via downlink messages.
 
 The send interval (in minutes) can be controlled thru a downlink message due to the custom firmware being used.
 
