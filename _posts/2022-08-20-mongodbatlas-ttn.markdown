@@ -11,19 +11,41 @@ tags:
 - MongoDB
 - Atlas
 - The Things Network
+- RAKwireless
 - TTN
 - TTS
 - TTI
 ---
 
-In this blog post I will show how data can be sent between LoRaWAN devices connected thru The Things Network and a MongoDB database with the help of the components available in MongoDB Atlas cloud service.
+In this blog post I will show how data can be sent to/from LoRaWAN devices connected thru The Things Network and a MongoDB database with the help of the services available in MongoDB Atlas cloud service.
 
 This blog post will cover:
 
-* Receive (Uplink) telemetry data sent from a LoRaWAN device and store it in a MongoDB timeseries database collection.
-* Receive (Uplink) settings/config data sent from a LoRaWAN device and store it in a "device twin" database collection.
-* Send changes which occurs on the "device twin" database documents as downlinks to the LoRaWAN device.
+* Receive (Uplink) telemetry data sent from a LoRaWAN device and store it in a MongoDB time series database collection. - Telemetry data is sent on LoRaWAN Port 1 from the end-device.
+* Receive (Uplink) settings/config data sent from a LoRaWAN device and store it in a "device twin" database collection. - Device config information is sent on LoRaWAN Port 2 from the end-device.
+* Send changes that occurs in the "deviceTwins" collection documents as downlinks to the LoRaWAN corresponding device.
 * Decode/Encode the LoraWAN device payload in a MongoDB Atlas Function.
+
+### LoRaWAN - The Things Network
+
+The Things Network (TTN) will provide us with the services related to LoRaWAN. In this blog the following LoRaWAN infrastructure exists:
+
+* A LoRaWAN gateway connected to TTN.
+* A RAKwireless RAK3172 LoRaWAN device with an environmental BME680 connected to it. This device also has a red and a green LED which can be controlled via downlink messages.
+
+#### End Device
+
+The end-device used is a RAK3172 from RAKwireless. This module contains a STM32WL chip along with a SEMTECH LoRaWAN module. The RAK3172 firmware can be developed and flashed "thru" Arduino and there is no need for an additonal microcontroller.
+
+There are also two LED:s connected to the RAK3172 which can be individually controlled via downlink messages.
+
+The send interval (in minutes) can also be controlled thru downlink.
+
+A BME680 Environmental sensor is connected to the RAK3172 via I2C. The BME60 measures temperature, humidity, air pressure and gas content:
+
+[![LoRaWAN Device]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/endDevice.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/endDevice.png)
+
+If you are interested in the code running on the RAK3172 module, you'll find it here: URL
 
 ### MongoDB Atlas
 
