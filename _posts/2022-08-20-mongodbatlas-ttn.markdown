@@ -17,6 +17,8 @@ tags:
 - TTI
 ---
 
+## Introduction
+
 In this blog post I will show how data can be sent between LoRaWAN devices hosted in *The Things Network* and *MongoDB* with the help of the components available in *MongoDB Atlas* cloud service.
 
 This blog post will cover:
@@ -26,14 +28,14 @@ This blog post will cover:
 * Send changes that occurs in the "deviceTwins" collection documents as downlinks to the LoRaWAN corresponding device.
 * Decode/Encode the LoraWAN device payload in a MongoDB Atlas Function.
 
-### LoRaWAN - The Things Network
+## LoRaWAN - The Things Network
 
 The Things Network (TTN) will provide us with the services related to LoRaWAN. In this blog the following LoRaWAN infrastructure exists:
 
 * A LoRaWAN gateway connected to TTN.
 * A RAKwireless RAK3172 LoRaWAN device with an environmental BME680 connected to it. This device also has a red and a green LED which can be controlled via downlink messages.
 
-#### End Device
+### End Device
 
 The end-device used is a RAK3172 module from RAKwireless. This module contains a STM32WL chip along with a SEMTECH LoRaWAN modem. The RAK3172 firmware can be developed and flashed "thru" Arduino and there is no need for an additional micro controller.
 
@@ -47,7 +49,7 @@ A BME680 Environmental sensor is connected to the RAK3172 via I2C. The BME60 mea
 
 If you are interested in the code running on the RAK3172 module, you'll find it here: URL
 
-### MongoDB Atlas
+## MongoDB Atlas
 
 MongoDB Atlas is a cloud service which contains several services which (apart from the database) can be used to create a complete solution.
 
@@ -59,7 +61,7 @@ In this blog post, we will use the following components:
   * Triggers - An "OnChange" trigger will initiate a function when a change occurs.
   * Functions - Two functions will be used. One will be triggered by TTN as a Webhook and the other function will be triggered when there is a change on the database collection.
 
-Let's get started!
+## Let's get started!
 
 ### The Things Network
 
@@ -130,7 +132,7 @@ First, we need to create a new *"App Service"* in which we can create *HTTPS End
 #### Create App Service
 
 Create a new App Service thru the web portal:
- 
+
 [![Create App Service]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateAppService.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateAppService.png)
 
 #### Create Functions
