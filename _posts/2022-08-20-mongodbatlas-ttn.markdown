@@ -25,7 +25,6 @@ This blog post will cover:
 * Send changes which occurs on the "device twin" database documents as downlinks to the LoRaWAN device.
 * Decode/Encode the LoraWAN device payload in a MongoDB Atlas Function.
 
-
 ### MongoDB Atlas
 
 MongoDB Atlas is a cloud service which contains a number of services which (apart from the database) can be used to create a complete solution.
@@ -39,6 +38,22 @@ In this blog post, we will use the following components in MongoDB Atlas:
   * Functions - Two functions will be used. One will be triggered by TTN as a Webhook and the other function will be triggered when there is a change on the database collection.
 
 Let's get started!
+
+### The Things Network
+
+The TTN webhook needs to be configured on the TTN console before we can add any *values*.
+
+In TTN, add a new webhook:
+
+* "Base URL" should point to the URL that we will receive in later steps when have created the "HTTPS Endpoint" in MongoDB Atlas. - Until then, add a random URL.
+* "Additional headers" needs to be configured since MongoDB HTTPS Endpoint expects a header named "API-KEY" containing the key. - We will generate an API-KEY in later steps so insert a radom one until then.
+* In this demo, we only want "Uplink message"
+
+[![Add webhook]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddWebhook.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddWebhook.png)
+
+In TTN, create a new API key. Take note of the key generated since we need to insert it into MongoDB *values* later:
+
+[![Add webhook]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddApiKey.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddApiKey.png)
 
 ### MongoDB
 
@@ -401,23 +416,7 @@ A *trigger* will enable us to run a function when something occurs in the databa
 
 #### Add Values
 
-The "toTTN" function requires a set of *values* to be declared to work as expected. These are values that we receive from the TTN console.
-
-The TTN webhook needs to be configured on the TTN console before we can add any *values*.
-
-In TTN, add a new webhook:
-
-* "Base URL" should point to the URL we got earlier when creating the "HTTPS Endpoint".
-* "Additional headers" needs to be configured since MongoDB HTTPS Endpoint expects a header named "API-KEY" containing the key.
-* In this demo, we only want "Uplink message"
-
-[![Add webhook]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddWebhook.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddWebhook.png)
-
-In TTN, add a new API key. Take note of the key generated since we need to insert it into MongoDB *values* later:
-
-[![Add webhook]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddApiKey.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddApiKey.png)
-
-Now we can add all data into *values*:
+The "toTTN" function requires a set of *values* to be declared to work as expected. These are values that we received from the TTN console earlier:
 
 [![Value TTN URL]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueTtnUrl.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueTtnUrl.png)
 
