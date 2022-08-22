@@ -52,7 +52,7 @@ We need to create a cluster which will host our database:
 
 Create the database which will hold our data. During database creation, we also create the collection for our time series data
 
-Time series collections requires us manually specify the timeField:
+Time series collections requires us manually specify the timeField. We also want to add the *device_id* as an metadata field:
 
 [![Create Database]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateDatabase.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateDatabase.png)
 
@@ -84,7 +84,7 @@ The *document* contains a "*desired*" which controls how we WANT the device to b
 }
 ```
 
-![Insert device document]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/InsertDeviceTwinDocument.png)
+[![Insert device document]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/InsertDeviceTwinDocument.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/InsertDeviceTwinDocument.png)
 
 ### MongoDB App Services
 
@@ -93,8 +93,8 @@ First we need to create a new *"App Service"* in which we can create *HTTPS Endp
 #### Create App Service
 
 Create a new App Service thru the web portal:
-
-![Create App Service]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateAppService.png)
+ 
+[![Create App Service]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateAppService.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateAppService.png)
 
 #### Create Functions
 
@@ -104,11 +104,11 @@ First we create the Function which will be executed by the TTN webhook. This fun
 
 NOTE: In this example we save all the data that we receive. Usually you want to filter it and only store the data which is of importance.
 
-![Create "fromTTN" function]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction1.png)
+[![Create "fromTTN" function]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction1.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction1.png)
 
 Navigate to "Function editor" and insert the code below:
 
-```json
+```js
 // This function is the endpoint's request handler.
 exports = function ({ query, headers, body }, response) {
 
@@ -125,20 +125,33 @@ exports = function ({ query, headers, body }, response) {
     // Result
     let res;
 
+    // Parse the incoming body to JSON
     const jsonBody = JSON.parse(reqBody.text())
-    jsonBody.received_at = new Date(jsonBody.received_at)
 
     // Check that incoming message is a message from a device
     if (jsonBody.uplink_message.f_port) {
 
-        let buff = Buffer.from(jsonBody.uplink_message.frm_payload, 'base64').toString("hex");
-        let hexArray = parseHexString(buff)
+        // Initialize a buffer containing the payload in HEX
+        const buff = Buffer.from(jsonBody.uplink_message.frm_payload, 'base64').toString("hex");
+
+        // Transform the hex-string to hex-array
+        const hexArray = parseHexString(buff)
 
         // lorawan port 1 contains telemetry data and should be inserted into telemetry collection
         if (jsonBody.uplink_message.f_port == 1) {
-            jsonBody.telemetry = hexArray;
 
-            context.services.get("mongodb-atlas").db("IoT").collection("telemetry").insertOne(jsonBody)
+            const doc = {
+                "received_at": new Date(jsonBody.received_at),
+                "device_id": jsonBody.end_device_ids.device_id,
+                "sensor_readings": {
+                    "temperature": temperature(hexArray.slice(0, 2)),
+                    "humidity": humidity(hexArray.slice(2, 4)),
+                    "air_pressure": rawfloat(hexArray.slice(4, 8)) / 100.0,
+                    "gas_resistance": rawfloat(hexArray.slice(8, 12)) / 1000.0,
+                }
+            };
+
+            context.services.get("mongodb-atlas").db("IoT").collection("telemetry").insertOne(doc)
                 .then(result => {
                     console.log(`Successfully inserted telemetry item with _id: ${result.insertedId}`);
                     res = result.insertedId;
@@ -163,7 +176,7 @@ exports = function ({ query, headers, body }, response) {
                             led_red: hexArray[1],
                             send_interval: hexArray[2],
                             version: hexArray[3],
-                            updated_ts: jsonBody.received_at
+                            updated_ts: new Date(jsonBody.received_at)
                         }
                     }
                 })
@@ -183,7 +196,11 @@ exports = function ({ query, headers, body }, response) {
     return res;
 };
 
-// Helper function. Creates hex array from hex string
+/////////////////////////
+/// Helper functions. ///
+/////////////////////////
+
+//Creates hex array from hex string
 function parseHexString(str) {
     var result = [];
     while (str.length >= 2) {
@@ -193,15 +210,77 @@ function parseHexString(str) {
 
     return result;
 }
+
+// Transform bytes to int
+var bytesToInt = function (bytes) {
+    var i = 0;
+    for (var x = 0; x < bytes.length; x++) {
+        i |= +(bytes[x] << (x * 8));
+    }
+    return i;
+};
+
+// Transform temperature
+var temperature = function (bytes) {
+    if (bytes.length !== temperature.BYTES) {
+        throw new Error('Temperature must have exactly 2 bytes');
+    }
+    var isNegative = bytes[0] & 0x80;
+    var b = ('00000000' + Number(bytes[0]).toString(2)).slice(-8)
+        + ('00000000' + Number(bytes[1]).toString(2)).slice(-8);
+    if (isNegative) {
+        var arr = b.split('').map(function (x) { return !Number(x); });
+        for (var i = arr.length - 1; i > 0; i--) {
+            arr[i] = !arr[i];
+            if (arr[i]) {
+                break;
+            }
+        }
+        b = arr.map(Number).join('');
+    }
+    var t = parseInt(b, 2);
+    if (isNegative) {
+        t = -t;
+    }
+    return t / 1e2;
+};
+temperature.BYTES = 2;
+
+// Transform humitidy
+var humidity = function (bytes) {
+    if (bytes.length !== humidity.BYTES) {
+        throw new Error('Humidity must have exactly 2 bytes');
+    }
+
+    var h = bytesToInt(bytes);
+    return h / 1e2;
+};
+humidity.BYTES = 2;
+
+// Transform raw float (4 bytes)
+function rawfloat(bytes) {
+    if (bytes.length !== rawfloat.BYTES) {
+        throw new Error('Float must have exactly 4 bytes');
+    }
+    // JavaScript bitwise operators yield a 32 bits integer, not a float.
+    // Assume LSB (least significant byte first).
+    var bits = bytes[3] << 24 | bytes[2] << 16 | bytes[1] << 8 | bytes[0];
+    var sign = (bits >>> 31 === 0) ? 1.0 : -1.0;
+    var e = bits >>> 23 & 0xff;
+    var m = (e === 0) ? (bits & 0x7fffff) << 1 : (bits & 0x7fffff) | 0x800000;
+    var f = sign * m * Math.pow(2, e - 150);
+    return f;
+}
+rawfloat.BYTES = 4;
 ```
 
-![Create "fromTTN" function]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction1-1.png)
+[![Create "fromTTN" function]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction1-2.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction1-2.png)
 
 Click "Review and deploy".
 
 Next we create the function which will be executed when there is a change in the *deviceTwins* collection:
 
-![Create "toTTN" function]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction2.png)
+[![Create "toTTN" function]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction2.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction2.png)
 
 On the "Function editor" tab. Insert the following code which will:
 
@@ -209,7 +288,7 @@ On the "Function editor" tab. Insert the following code which will:
 * Encode the *settings.desired* to a BASE64 string.
 * Send the data thru a HTTP POST to The Things Network.
 
-```json
+```js
 exports = async function (changeEvent) {
   
   // Variables loaded from "values":
@@ -282,13 +361,13 @@ function createHexString(arr) {
 
 ```
 
-![Create "toTTN" function]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction2-2.png)
+[![Create "toTTN" function]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction2-2.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction2-2.png)
 
 #### Create HTTPS Endpoint
 
-We need a HTTPS Endpoint. We will tell TTN to send its data to this endpoint later on. Here we select the "fromTTN" function created earlier:
+We need a HTTPS Endpoint in MongoDB App Services. We will tell TTN to send its data to this endpoint later on. Here we select the "fromTTN" function created earlier:
 
-![Create HTTPS Endpoint]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateHttpsEndpoint.png)
+[![Create HTTPS Endpoint]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateHttpsEndpoint.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateHttpsEndpoint.png)
 
 NOTE: Copy the URL generated. We need it when we configure TTN later.
 
@@ -298,11 +377,11 @@ A *API-KEY* required for authorization of TTN is needed. We create one thru "App
 
 NOTE: Copy the key, you will need it later.
 
-![Create API key]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateApiKey.png)
+[![Create API key]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateApiKey.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateApiKey.png)
 
 Copy the uniq ID of the *User*. We need this ID later when we create the permissions under *rules*:
 
-![API key]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/Apikey.png)
+[![API key]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/Apikey.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/Apikey.png)
 
 #### Create Rules
 
@@ -310,15 +389,15 @@ Rules are *permissions* that we need to configure to allow our functions - initi
 
 We will delegate *insert* permissions onto the *deviceTwins* and *telemetry* collection with the help of the *id* on the API-KEY user we created earlier:
 
-![Rule - Telemetry]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/RuleTelemetry.png)
+[![Rule - Telemetry]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/RuleTelemetry.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/RuleTelemetry.png)
 
-![Rule - deviceTwins]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/RuleDeviceTwin.png)
+[![Rule - deviceTwins]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/RuleDeviceTwin.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/RuleDeviceTwin.png)
 
 #### Add Trigger
 
 A *trigger* will enable us to run a function when something occurs in the database. We want it to trigger our "toTTN" function when a document in the *deviceTwins* collection is changed:
 
-![Create Trigger]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateTrigger.png)
+[![Create Trigger]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateTrigger.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateTrigger.png)
 
 #### Add Values
 
@@ -332,35 +411,34 @@ In TTN, add a new webhook:
 * "Additional headers" needs to be configured since MongoDB HTTPS Endpoint expects a header named "API-KEY" containing the key.
 * In this demo, we only want "Uplink message"
 
-![Add webhook]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddWebhook.png)
+[![Add webhook]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddWebhook.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddWebhook.png)
 
 In TTN, add a new API key. Take note of the key generated since we need to insert it into MongoDB *values* later:
 
-![Add webhook]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddApiKey.png)
+[![Add webhook]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddApiKey.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddApiKey.png)
 
 Now we can add all data into *values*:
 
-![Value TTN URL]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueTtnUrl.png)
+[![Value TTN URL]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueTtnUrl.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueTtnUrl.png)
 
-![Value TTN AppID]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueTttnAppId.png)
+[![Value TTN AppID]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueTtnAppId.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueTtnAppId.png)
 
-![Value TTN Webhook name]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValuesTtnWebhook.png)
+[![Value TTN Webhook name]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValuesTtnWebhook.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValuesTtnWebhook.png)
 
-![Add TTN secret]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueSecret.png)
-
+[![Add TTN secret]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueSecret.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueSecret.png)
 
 ### Testing
 
-All done. Time for testing.
+Time for testing.
 
 The uplink messages from the LoRaWAN device should now start to populate the *telemetry* collection:
 
-![Received telemetry]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/receivedTelemetry.png)
+[![Received telemetry]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/receivedTelemetry.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/receivedTelemetry.png)
 
 If any change is made in the document, the *trigger* that we have created is executed. The trigger function checks if the version number under *desired* vs *reported* matches or not. If the version numbers doesn't match then a downlink to the device is scheduled thru the TTN webhook. The LoRaWAN device is working as a Class-A device, downlink will occur after the next uplink:
 
-![Pending twin update]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinPending.png)
+[![Pending twin update]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinPending.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinPending.png)
 
-The LoRaWAN device runs a custom firmware which is configured to echo back the settings that it receives, And after the device receives the downlink and echos it back, we see that the same version number under *reported*:
+The LoRaWAN device runs a custom firmware and will echo back the settings it receives. After the next uplink we see that the same version number is reported under *reported*:
 
-![Twin updated]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinUpdated.png)
+[![Twin updated]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinUpdated.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinUpdated.png)
