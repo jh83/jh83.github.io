@@ -317,7 +317,7 @@ rawfloat.BYTES = 4;
 
 Click "Review and deploy".
 
-Next we create the function which will be executed when there is a change in the *deviceTwins* collection:
+Next we create the function which will be executed by a *trigger* when there is an "onChange" event in the *deviceTwins* collection:
 
 [![Create "toTTN" function]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction2.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction2.png)
 
