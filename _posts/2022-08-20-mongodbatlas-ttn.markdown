@@ -143,8 +143,6 @@ First, we create the Function which will be executed by the TTN webhook.
 
 This function will take the input from TTN, decode the payload, and then insert the data to the *telemetry* collection if the LoRaWan port is equal to "1". If the LoRaWAN port is equal to "2", then data is inserted into the *deviceTwins* collection.
 
-NOTE: In this example we save all the data that we receive. Usually you want to filter it and only store the data which is of importance.
-
 [![Create "fromTTN" function]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction1.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateFunction1.png)
 
 Navigate to "Function editor" and insert the code below:
