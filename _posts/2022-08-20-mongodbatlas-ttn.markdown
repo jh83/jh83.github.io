@@ -17,7 +17,7 @@ tags:
 - TTI
 ---
 
-In this blog post I will show how data can be sent to/from LoRaWAN devices connected thru The Things Network and a MongoDB database with the help of the services available in MongoDB Atlas cloud service.
+In this blog post I will show how data can be sent to/from LoRaWAN devices connected to/from *The Things Network* and a MongoDB database with the help of the services available in MongoDB Atlas cloud service.
 
 This blog post will cover:
 
@@ -49,7 +49,7 @@ If you are interested in the code running on the RAK3172 module, you'll find it 
 
 ### MongoDB Atlas
 
-MongoDB Atlas is a cloud service which contains a number of services which (apart from the database) can be used to create a complete solution.
+MongoDB Atlas is a cloud service which contains several services which (apart from the database) can be used to create a complete solution.
 
 In this blog post, we will use the following components in MongoDB Atlas:
 
@@ -89,7 +89,7 @@ We need to create a cluster which will host our database:
 
 Create the database which will hold our data. During database creation, we also create the collection for our time series data
 
-Time series collections requires us manually specify the timeField. We also want to add the *device_id* as an metadata field:
+Time series collections requires us manually specify the timeField. We also want to add the *device_id* as a metadata field:
 
 [![Create Database]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateDatabase.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateDatabase.png)
 
@@ -125,7 +125,7 @@ The *document* contains a "*desired*" which controls how we WANT the device to b
 
 ### MongoDB App Services
 
-First we need to create a new *"App Service"* in which we can create *HTTPS Endpoints*, *Triggers* and *Functions* later on.
+First, we need to create a new *"App Service"* in which we can create *HTTPS Endpoints*, *Triggers* and *Functions* later on.
 
 #### Create App Service
 
@@ -137,7 +137,7 @@ Create a new App Service thru the web portal:
 
 We will need two functions. One which will be triggered by the webhook initiated from The Things Network, and a second one which will be triggered when there is a change on a document in the *deviceTwins* collection.
 
-First we create the Function which will be executed by the TTN webhook. This function will take the input from TTN, decode the payload and insert the data into the *telemetry* collection.
+First, we create the Function which will be executed by the TTN webhook. This function will take the input from TTN, decode the payload, and insert the data into the *telemetry* collection.
 
 NOTE: In this example we save all the data that we receive. Usually you want to filter it and only store the data which is of importance.
 
@@ -452,7 +452,7 @@ The uplink messages from the LoRaWAN device should now start to populate the *te
 
 [![Received telemetry]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/receivedTelemetry.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/receivedTelemetry.png)
 
-If a change is made in on a *document* in the "deviceTwins" collection, the *trigger*  is executed. The trigger function checks if the version number under *desired* vs *reported* matches or not. If the version numbers doesn't match then a downlink to the device is scheduled thru the TTN webhook. The LoRaWAN device is working as a Class-A device, downlink will occur after the next uplink:
+If a change is made in on a *document* in the "deviceTwins" collection, the *trigger* is executed. The trigger function checks if the version number under *desired* vs *reported* matches or not. If the version numbers don't match then a downlink to the device is scheduled thru the TTN webhook. The LoRaWAN device is working as a Class-A device, downlink will occur after the next uplink:
 
 [![Pending twin update]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinPending.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinPending.png)
 
