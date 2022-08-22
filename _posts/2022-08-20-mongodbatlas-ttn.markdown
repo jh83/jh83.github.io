@@ -43,7 +43,7 @@ There two LED:s connected to the RAK3172 which can be individually controlled vi
 
 The send interval (in minutes) can be controlled thru a downlink message due to the custom firmware being used.
 
-A BME680 Environmental sensor is connected to the RAK3172 via I2C. The BME60 measures temperature, humidity, air pressure and gas content. This data is sent via LoRaWAN to TTN based on the configured *send_interval* which is defined in minutes:
+A BME680 Environmental sensor is connected to the RAK3172 via I2C. The BME680 measures temperature, humidity, air pressure and gas content. This data is sent via LoRaWAN to TTN based on the configured *send_interval* which is defined in minutes:
 
 [![LoRaWAN Device]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/endDevice.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/endDevice.png)
 
