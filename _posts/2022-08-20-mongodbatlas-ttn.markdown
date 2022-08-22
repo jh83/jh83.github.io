@@ -115,7 +115,7 @@ Create a new App Service thru the web portal:
 
 We will need two functions. One which will be triggered by the webhook initiated from The Things Network, and a second one which will be triggered when there is a change on a document in the *deviceTwins* collection.
 
-First we create the Function which will be executed by the TTN webhook. This function will take the input from TTN, decode the BASE64 payload and insert the data into the *telemetry* collection.
+First we create the Function which will be executed by the TTN webhook. This function will take the input from TTN, decode the payload and insert the data into the *telemetry* collection.
 
 NOTE: In this example we save all the data that we receive. Usually you want to filter it and only store the data which is of importance.
 
@@ -380,23 +380,19 @@ function createHexString(arr) {
 
 #### Create HTTPS Endpoint
 
-We need a HTTPS Endpoint in MongoDB App Services. We will tell TTN to send its data to this endpoint later on. Here we select the "fromTTN" function created earlier:
+We need a HTTPS Endpoint in MongoDB App Services. Here we select the "fromTTN" function created earlier. Take note of the URL shown and insert it into the TTN configuration performed in earlier:
 
 [![Create HTTPS Endpoint]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateHttpsEndpoint.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateHttpsEndpoint.png)
 
-NOTE: Copy the URL generated. We need it when we configure TTN later.
-
 #### Create API Key
 
-A *API-KEY* required for authorization of TTN is needed. We create one thru "App Users".
-
-NOTE: Copy the key, you will need it later.
+A *API-KEY* required to authorize TTN. We create one thru "App Users". Insert this key into the TTN console in earlier steps:
 
 [![Create API key]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateApiKey.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateApiKey.png)
 
 Copy the uniq ID of the *User*. We need this ID later when we create the permissions under *rules*:
 
-[![API key]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/Apikey.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/Apikey.png)
+[![API key]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ApiKey.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ApiKey.png)
 
 #### Create Rules
 
@@ -410,7 +406,7 @@ We will delegate *insert* permissions onto the *deviceTwins* and *telemetry* col
 
 #### Add Trigger
 
-A *trigger* will enable us to run a function when something occurs in the database. We want it to trigger our "toTTN" function when a document in the *deviceTwins* collection is changed:
+A *trigger* will enable us to run a function when something occurs in the database. We want it to run our "toTTN" function when a document in the *deviceTwins* collection is changed:
 
 [![Create Trigger]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateTrigger.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/CreateTrigger.png)
 
@@ -434,7 +430,7 @@ The uplink messages from the LoRaWAN device should now start to populate the *te
 
 [![Received telemetry]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/receivedTelemetry.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/receivedTelemetry.png)
 
-If any change is made in the document, the *trigger* that we have created is executed. The trigger function checks if the version number under *desired* vs *reported* matches or not. If the version numbers doesn't match then a downlink to the device is scheduled thru the TTN webhook. The LoRaWAN device is working as a Class-A device, downlink will occur after the next uplink:
+If a change is made in on a *document* in the "deviceTwins" collection, the *trigger*  is executed. The trigger function checks if the version number under *desired* vs *reported* matches or not. If the version numbers doesn't match then a downlink to the device is scheduled thru the TTN webhook. The LoRaWAN device is working as a Class-A device, downlink will occur after the next uplink:
 
 [![Pending twin update]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinPending.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinPending.png)
 
