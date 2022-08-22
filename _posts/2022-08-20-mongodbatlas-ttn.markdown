@@ -35,7 +35,7 @@ The Things Network (TTN) will provide us with the services related to LoRaWAN. I
 * A LoRaWAN gateway connected to TTN.
 * A RAKwireless RAK3172 LoRaWAN device with an environmental BME680 connected to it. This device also has a red and a green LED which can be controlled via downlink messages.
 
-#### End Device
+#### LoRaWAN - End Device
 
 The end-device used is a RAK3172 module from RAKwireless. This module contains a STM32WL chip along with a SEMTECH LoRaWAN modem. The RAK3172 firmware can be developed and flashed "thru" Arduino and there is no need for an additional micro controller.
 
