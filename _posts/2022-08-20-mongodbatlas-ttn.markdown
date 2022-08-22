@@ -17,7 +17,7 @@ tags:
 - TTI
 ---
 
-In this blog post I will show how data can be sent to/from LoRaWAN devices connected to/from *The Things Network* and a MongoDB database with the help of the services available in MongoDB Atlas cloud service.
+In this blog post I will show how data can be sent between LoRaWAN devices hosted in *The Things Network* and *MongoDB* services with the help of the components available in *MongoDB Atlas* cloud service.
 
 This blog post will cover:
 
@@ -35,13 +35,13 @@ The Things Network (TTN) will provide us with the services related to LoRaWAN. I
 
 #### End Device
 
-The end-device used is a RAK3172 from RAKwireless. This module contains a STM32WL chip along with a SEMTECH LoRaWAN module. The RAK3172 firmware can be developed and flashed "thru" Arduino and there is no need for an additonal microcontroller.
+The end-device used is a RAK3172 module from RAKwireless. This module contains a STM32WL chip along with a SEMTECH LoRaWAN modem. The RAK3172 firmware can be developed and flashed "thru" Arduino and there is no need for an additional micro controller.
 
 There are also two LED:s connected to the RAK3172 which can be individually controlled via downlink messages.
 
-The send interval (in minutes) can also be controlled thru downlink.
+The send interval (in minutes) can be controlled thru a downlink message due to the custom firmware being used.
 
-A BME680 Environmental sensor is connected to the RAK3172 via I2C. The BME60 measures temperature, humidity, air pressure and gas content:
+A BME680 Environmental sensor is connected to the RAK3172 via I2C. The BME60 measures temperature, humidity, air pressure and gas content. This data is sent via LoRaWAN to TTN based on the configured *send_interval* which is defined in minutes:
 
 [![LoRaWAN Device]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/endDevice.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/endDevice.png)
 
@@ -51,7 +51,7 @@ If you are interested in the code running on the RAK3172 module, you'll find it 
 
 MongoDB Atlas is a cloud service which contains several services which (apart from the database) can be used to create a complete solution.
 
-In this blog post, we will use the following components in MongoDB Atlas:
+In this blog post, we will use the following components:
 
 * MongoDB - The database service in which we will store our data.
 * App Services:
@@ -63,12 +63,12 @@ Let's get started!
 
 ### The Things Network
 
-The TTN webhook needs to be configured on the TTN console before we can add any *values*.
+A TTN webhook needs to be created thru the TTN console.
 
 In TTN, add a new webhook:
 
 * "Base URL" should point to the URL that we will receive in later steps when have created the "HTTPS Endpoint" in MongoDB Atlas. - Until then, add a random URL.
-* "Additional headers" needs to be configured since MongoDB HTTPS Endpoint expects a header named "API-KEY" containing the key. - We will generate an API-KEY in later steps so insert a radom one until then.
+* "Additional headers" needs to be configured since MongoDB HTTPS Endpoint expects a header named "API-KEY" containing the key. - We will generate an API-KEY in later steps so insert a random one until later.
 * In this demo, we only want "Uplink message"
 
 [![Add webhook]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddWebhook.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ttnAddWebhook.png)
