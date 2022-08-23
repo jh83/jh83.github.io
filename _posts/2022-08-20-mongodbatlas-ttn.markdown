@@ -51,7 +51,7 @@ If you are interested in the code running on the RAK3172 module, you'll find it 
 
 ### MongoDB Atlas
 
-MongoDB Atlas is a cloud service which contains several services which (apart from the database) can be used to create a complete solution.
+MongoDB Atlas is a cloud service that provides several different services which (apart from the database) can be used to create a complete solution.
 
 In this blog post, we will use the following components:
 
