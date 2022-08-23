@@ -28,6 +28,20 @@ This blog post will cover:
 * Send changes that occurs in the "deviceTwins" collection documents as downlinks to the LoRaWAN corresponding device.
 * Decode/Encode the LoraWAN device payload in a MongoDB Atlas Function.
 
+### MongoDB Atlas/App Services
+
+MongoDB Atlas/App Services is a cloud service that provides several different services which (apart from the database) can be used to create a complete solution:
+
+[![MongoDB Cloud Services]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/MongoDBServices.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/MongoDBServices.png)
+
+In this blog post, we will use the following components which as of the time of writing this article are free of charge:
+
+* MongoDB - The database service in which we will store our data.
+* App Services:
+  * HTTPS Endpoint - An HTTPS endpoint will be created to which we will tell TTN to send the data coming from the LoRaWAN device.
+  * Triggers - An "OnChange" trigger will initiate a function when a change occurs.
+  * Functions - Two functions will be used. One will be triggered by TTN as a Webhook and the other function will be triggered when there is a change on the database collection.
+
 ### LoRaWAN - The Things Network
 
 The Things Network (TTN) will provide us with the services related to LoRaWAN. In this blog the following LoRaWAN infrastructure exists:
@@ -48,18 +62,6 @@ A custom LoRaWAN device has be built for this blog/demo based on the RAK3172 mod
 [![LoRaWAN Device]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/endDevice.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/endDevice.png)
 
 If you are interested in the code running on the RAK3172 module, you'll find it here: [RAK3172-BME680 device](https://github.com/jh83/RAK3172-BME680)
-
-### MongoDB Atlas
-
-MongoDB Atlas is a cloud service that provides several different services which (apart from the database) can be used to create a complete solution.
-
-In this blog post, we will use the following components which as of the time of writing this article are free of charge:
-
-* MongoDB - The database service in which we will store our data.
-* App Services:
-  * HTTPS Endpoint - An HTTPS endpoint will be created to which we will tell TTN to send the data coming from the LoRaWAN device.
-  * Triggers - An "OnChange" trigger will initiate a function when a change occurs.
-  * Functions - Two functions will be used. One will be triggered by TTN as a Webhook and the other function will be triggered when there is a change on the database collection.
 
 ## Let's get started!
 
