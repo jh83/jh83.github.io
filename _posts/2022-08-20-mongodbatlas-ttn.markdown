@@ -32,7 +32,7 @@ This blog post will cover:
 
 MongoDB Atlas/App Services is a cloud service that provides several different services which (apart from the database) can be used to create a complete solution:
 
-[![MongoDB Cloud Services]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/MongoDBServices.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/MongoDBServices.png)
+[![]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/components.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/components.png)
 
 In this blog post, we will use the following components which as of the time of writing this article are free of charge:
 
