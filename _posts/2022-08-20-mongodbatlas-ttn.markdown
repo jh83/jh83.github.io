@@ -53,7 +53,7 @@ If you are interested in the code running on the RAK3172 module, you'll find it 
 
 MongoDB Atlas is a cloud service that provides several different services which (apart from the database) can be used to create a complete solution.
 
-In this blog post, we will use the following components:
+In this blog post, we will use the following components which as of the time of writing this article are free of charge:
 
 * MongoDB - The database service in which we will store our data.
 * App Services:
@@ -454,7 +454,7 @@ The uplink messages from the LoRaWAN device should now start to populate the *te
 
 [![Received telemetry]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/receivedTelemetry.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/receivedTelemetry.png)
 
-If a change is made in on a *document* in the "deviceTwins" collection, the *trigger* is executed. The trigger function checks if the version number under *desired* vs *reported* matches or not. If the version numbers don't match then a downlink to the device is scheduled thru the TTN webhook. The LoRaWAN device is working as a Class-A device, downlink will occur after the next uplink:
+If a change is made in on a *document* in the "deviceTwins" collection, the *trigger* is executed. The trigger function checks if the version number under *desired* vs *reported* matches or not. If the version numbers don't match then a downlink to the device is scheduled thru the TTN webhook. The LoRaWAN device is working as a Class-A device, therefore downlink will occur after the next uplink:
 
 [![Pending twin update]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinPending.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/deviceTwinPending.png)
 
