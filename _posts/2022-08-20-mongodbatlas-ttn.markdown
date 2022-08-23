@@ -37,17 +37,17 @@ The Things Network (TTN) will provide us with the services related to LoRaWAN. I
 
 #### LoRaWAN - End Device
 
-The end-device used is a RAK3172 module from RAKwireless. This module contains a STM32WL chip along with a SEMTECH LoRaWAN modem. The firmware for RAK3172 can be developed and flashed "thru" Arduino and there is no need for an additional micro controller.
+A custom LoRaWAN device has be built for this blog/demo based on the RAK3172 module from RAKwireless. This module contains a STM32WL chip along with a SEMTECH LoRaWAN modem. The firmware for RAK3172 can be developed and flashed "thru" Arduino and there is no need for an additional micro controller:
 
-There two LED:s connected to the RAK3172 which can be individually controlled via downlink messages.
+* Two LED:s connected to the RAK3172 which can be individually controlled via downlink messages.
 
-The send interval (in minutes) can be controlled thru a downlink message due to the custom firmware being used.
+* Send interval (in minutes) can be controlled thru a downlink message due to the custom firmware being used.
 
-A BME680 Environmental sensor is connected to the RAK3172 via I2C. The BME680 measures temperature, humidity, air pressure and gas content. This data is sent via LoRaWAN to TTN based on the configured *send_interval* which is defined in minutes:
+* A BME680 Environmental sensor is connected to the RAK3172 via I2C. The BME680 measures temperature, humidity, air pressure and gas content. This data is sent via LoRaWAN to TTN based on the configured *send_interval* which is defined in minutes:
 
 [![LoRaWAN Device]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/endDevice.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/endDevice.png)
 
-If you are interested in the code running on the RAK3172 module, you'll find it here: URL
+If you are interested in the code running on the RAK3172 module, you'll find it here: [RAK3172-BME680 device](https://github.com/jh83/RAK3172-BME680)
 
 ### MongoDB Atlas
 
