@@ -21,6 +21,8 @@ tags:
 
 In this blog post I will show how data can be sent between LoRaWAN devices hosted in *The Things Network* and *MongoDB* with the help of the components available in *MongoDB Atlas* cloud service.
 
+[![Architecture]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/components.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/components.png)
+
 This blog post will cover:
 
 * Receive (Uplink) telemetry data sent from a LoRaWAN device and store it in a MongoDB time series database collection. - Telemetry data is sent on LoRaWAN Port 1 from the end-device.
@@ -32,7 +34,7 @@ This blog post will cover:
 
 MongoDB Atlas/App Services is a cloud service that provides several different services which (apart from the database) can be used to create a complete solution:
 
-[![]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/components.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/components.png)
+
 
 In this blog post, we will use the following components which as of the time of writing this article are free of charge:
 
