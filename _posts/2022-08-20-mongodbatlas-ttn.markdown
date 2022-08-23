@@ -21,7 +21,7 @@ tags:
 
 In this blog post I will show how data can be sent between LoRaWAN devices hosted in *The Things Network* and *MongoDB* with the help of the components available in *MongoDB Atlas* cloud service.
 
-[Architecture]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/components.png)
+![Architecture]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/components.png)
 
 This blog post will cover:
 
