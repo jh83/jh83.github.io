@@ -446,7 +446,7 @@ The "toTTN" function requires a set of *values* to be declared to work as expect
 
 [![Add TTN secret]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueSecret.png)]({{ BASE_PATH }}/assets/images/mongodbatlas-ttn/ValueSecret.png)
 
-### Testing
+## Testing
 
 Time for testing.
 
