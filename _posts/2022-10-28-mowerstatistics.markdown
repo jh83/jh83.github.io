@@ -32,13 +32,13 @@ First of all, RTK-GPS was a requirement from my side to provide the GPS/GNSS acc
 
 I also needed a way to transport the RTK reference signal from my base station to the Mower which is considered as a *rover*. It turned out that my WiFi covered almost all of my lawn so I decided to go for WiFi for simplicity.
 
-My RTK-GPS base station was already running from previous projects and the reference signal has been sent to RTK2GO for a long time now. More information about the RTK-Base station I built earlier which runs on a ESP32 board powered thru PoE can be found here [NTRIP-Server_ESP32-PoE-BaseStation](https://github.com/jh83/NTRIP-Server_ESP32-BaseStation)
+My RTK-GPS base station was already in place and running from previous projects and the reference signal has been sent to RTK2GO for a long time. More information about the RTK-Base station I built earlier which runs on a ESP32 microcontroller powered thru PoE can be found here [NTRIP-Server_ESP32-PoE-BaseStation](https://github.com/jh83/NTRIP-Server_ESP32-BaseStation)
 
-The data which is outputed once per second from the Ublox ZED-F9P GPS module is added to a *buffer* in the ESP32 chip running on the mower and then on every 10 seconds it send it's buffer to a HTTPS endpoint and function living in the MongoDB Atlas Cloud service.
+The GPS/GNSS location data which is produced once per second from on Ublox ZED-F9P GNSS module is added to a *buffer* in the ESP32 microcontroller running on the mower and then on every 10 seconds it send it's buffer to a HTTPS endpoint and function living in the MongoDB Atlas Cloud service.
 
 If WiFi is lost, then GPS positions are buffered and sent once the WiFi connectivity is reestablished. RTK-GPS seem to maintain its "FIX" status for about 30-60 seconds without a reference signal.
 
-The receiving *MongoDB Atlas Function* is responsible for parsing the raw NMEA string which was collected and sent by the ESP32 board to MongoDB. After parsing the NMEA String, the MongoDB function creates a geoJSON *point* feature of each measurement and inserts it into a time series collection in the database.
+The receiving *MongoDB Atlas Function* is responsible for parsing the raw NMEA string which was collected and sent by the ESP32 microcontroller to MongoDB. After parsing the NMEA String, the MongoDB function creates a geoJSON *point* feature of each measurement and inserts it into a time series collection in the database.
 
 [![Architecture]({{ BASE_PATH }}/assets/images/mower-statistics/components.png)]({{ BASE_PATH }}/assets/images/mower-statistics/components.png)
 
@@ -80,7 +80,7 @@ In this solution both CPU cores of the ESP32 are used to be able to execute task
   * Listen to the NMEA string output from the ZED-F9P which occurs at 1HZ and push it to the *NMEA Buffer*.
 * Second core is responsible for:
   * On a 10 second interval, get the *NMEA Buffer* and push it to the MongoDB HTTPS endpoint.
-  * If WiFi or MongoDB is unreachable for whatever reason (poor WiFi coverage), then retry the *NMEA Buffer* at an interval and then replay it once WiFi/MongoDB becomes available.
+  * If WiFi or MongoDB is unreachable for whatever reason (poor WiFi coverage), then retry the *NMEA Buffer* at an interval and then bulk upload it once WiFi/MongoDB becomes available.
 
 ### MognoDB Atlas Cloud Services
 
@@ -98,7 +98,7 @@ The MongoDB Atlas function that has been coded (and triggered by the HTTPS Endpo
 
 * Loop thru the incoming array of NMEA Strings and:
   * Parse the NMEA string to:
-    * Time received.
+    * Timestamp that can be handled by MongoDB.
     * Longitude/Latitude as a *geoJSON Point* format.
   * Write to database with *insertMany()*
 
