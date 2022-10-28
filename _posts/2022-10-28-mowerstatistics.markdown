@@ -38,7 +38,7 @@ The data which is outputed once per second from the Ublox ZED-F9P GPS module is 
 
 If WiFi is lost, then GPS positions are buffered and sent once the WiFi connectivity is reestablished. RTK-GPS seem to maintain its "FIX" status for about 30-60 seconds without a reference signal.
 
-The receiving MongoDB Atlas Function is responsible for parsing the raw NMEA string which are collected and sent by the ESP32 board to MongoDB. After parsing the NMEA String, the MongoDB function creates a geoJSON *point* feature of each measurement and inserts it into a timeseries collection in the database.
+The receiving *MongoDB Atlas Function* is responsible for parsing the raw NMEA string which was collected and sent by the ESP32 board to MongoDB. After parsing the NMEA String, the MongoDB function creates a geoJSON *point* feature of each measurement and inserts it into a timeseries collection in the database.
 
 [![Architecture]({{ BASE_PATH }}/assets/images/mowers-statistics/components.png)]({{ BASE_PATH }}/assets/images/mowers-statistics/components.png)
 
@@ -54,3 +54,24 @@ RTK-GPS explanation from Wikipedia:
 *This allows the units to calculate their relative position to within millimeters, although their absolute position is accurate only to the same accuracy as the computed position of the base station. The typical nominal accuracy for these systems is 1 centimetre ± 2 parts-per-million (ppm) horizontally and 2 centimetres ± 2 ppm vertically.*
 
 *Although these parameters limit the usefulness of the RTK technique for general navigation, the technique is perfectly suited to roles like surveying. In this case, the base station is located at a known surveyed location, often a benchmark, and the mobile units can then produce a highly accurate map by taking fixes relative to that point. RTK has also found uses in autodrive/autopilot systems, precision farming, machine control systems and similar roles.*
+
+### Mower
+
+[![Mower Hardware]({{ BASE_PATH }}/assets/images/mowers-statistics/mower.png)]({{ BASE_PATH }}/assets/images/mowers-statistics/mower.png)
+
+#### Hardware
+
+The hardware placed on the mower consists of:
+
+* Ublox ZED-F9P GPS module.
+* DA910 Multi-band GNSS Antenna
+* ESP32 as the "brain". It is responsible for:
+  * Getting the RTK reference signal from RTK2GO cloud service and sending it thru I2C to the Ublox ZED-F9P GPS module.
+  * Receive the NMEA *GNGGA* message from the ZED-F9P at 1 HZ and buffer it until next *uplink* to MongoDB.
+  * Send the NMEA *buffer* to the HTTPS endpoint/Function in MongoDB Atlas.
+
+#### Software
+
+### MognoDB Atlas Cloud Services
+
+### Frontend
