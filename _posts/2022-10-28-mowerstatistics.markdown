@@ -15,9 +15,9 @@ tags:
 - RTK-GPS
 ---
 
-## Introduction
-
 How *inefficient* is a lawn mower that cuts on a randomized pattern? - Let's find out!
+
+## Introduction
 
 In this article I will use Real-Time Kinematic (RKT) GPS with centimeter level accuracy to track the movements our Husqvarna AutoMower 315 Mark II robotic mower and upload the data into a MongoDB Atlas database for further analysis and visualization.
 
