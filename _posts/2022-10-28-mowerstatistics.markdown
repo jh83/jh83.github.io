@@ -40,7 +40,7 @@ If WiFi is lost, then GPS positions are buffered and sent once the WiFi connecti
 
 The receiving *MongoDB Atlas Function* is responsible for parsing the raw NMEA string which was collected and sent by the ESP32 board to MongoDB. After parsing the NMEA String, the MongoDB function creates a geoJSON *point* feature of each measurement and inserts it into a timeseries collection in the database.
 
-[![Architecture]({{ BASE_PATH }}/assets/images/mowers-statistics/components.png)]({{ BASE_PATH }}/assets/images/mowers-statistics/components.png)
+[![Architecture]({{ BASE_PATH }}/assets/images/mower-statistics/components.png)]({{ BASE_PATH }}/assets/images/mower-statistics/components.png)
 
 ### What is RTK-GPS?
 
@@ -57,7 +57,7 @@ RTK-GPS explanation from Wikipedia:
 
 ### Mower
 
-[![Mower Hardware]({{ BASE_PATH }}/assets/images/mowers-statistics/mower.png)]({{ BASE_PATH }}/assets/images/mowers-statistics/mower.png)
+[![Mower Hardware]({{ BASE_PATH }}/assets/images/mower-statistics/mower.png)]({{ BASE_PATH }}/assets/images/mower-statistics/mower.png)
 
 #### Hardware
 
