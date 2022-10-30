@@ -19,7 +19,7 @@ How *inefficient* is a lawn mower that cuts on a randomized pattern? How many sq
 
 ## Introduction
 
-DISCLAIMER: This blog post is not written to start any debate on which method that is the correct one. - All I can say is that our lawn looks better with an robotic lawn mower compared to how it looked before.
+DISCLAIMER: This blog post is not written to start any debate on which cutting method that is the correct one. - All I can say is that our lawn looks better with an robotic lawn mower compared to how it looked before.
 
 In this solution, I will use Real-Time Kinematic (RKT) GPS with centimeter level accuracy to track the movements our Husqvarna AutoMower 315 Mark II robotic mower and upload the data into a MongoDB Atlas database which in the end will provide me with the possibilities to visualize and graph how much time and area the robotic lawn mower need to cut before the whole lawn is mowed at least once.
 
