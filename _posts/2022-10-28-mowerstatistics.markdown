@@ -21,10 +21,13 @@ How *inefficient* is a lawn mower that cuts on a randomized pattern? How many sq
 
 In this solution, I will use Real-Time Kinematic (RKT) GPS with centimeter level accuracy to track the movements our Husqvarna AutoMower 315 Mark II robotic mower and upload the data into a MongoDB Atlas database which in the end will provide me with the possibilities to visualize and graph how much time and area the robotic lawn mower need to cut before the whole lawn is mowed at least once.
 
-And the results?:
+And the results? - Around 4000 total square meters are cut before the total mowed area gets close to 100%.
+
+The frontend built looks like this:
+
 [![Animation]({{ BASE_PATH }}/assets/images/mower-statistics/animation.gif)]({{ BASE_PATH }}/assets/images/mower-statistics/animation.gif)
 
-## Solution overview
+## Solution
 
 To solve this task, multiple components and services has been used.
 
@@ -247,7 +250,7 @@ Mower settings can be managed:
 
 Lawn settings can be managed:
 
-* Takes an *geoJSON features* object as input. A geoJSON features object can contain multiple *features* and the perimeter of the lawn must be the first object in the array. Additional *features* can be added to exclude areas for trees and stairs etc from the Lawn area. If "name: charging_station" is set on a geoJSON feature then this "point" will also be used as an *not geoWithin* input in the DB Query.
+* Takes an *geoJSON features* object as input. A geoJSON features object can contain multiple *feature* objects and the perimeter of the lawn must be the first *feature* object in the array. Additional *features* can be added to exclude areas for trees and stairs etc from the Lawn area. If "name: charging_station" is set on a geoJSON feature then this "point" will also be used as an *not geoWithin* input in the DB Query.
 
 [![Lawn Settings Page]({{ BASE_PATH }}/assets/images/mower-statistics/lawnpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/lawnpage.png)
 
@@ -266,3 +269,13 @@ When the hidden canvas has been fully drawn for one date, then a snapshot is tak
 This line chart displays how many square meters that has been cut in total, and how many "unique" square meters that has been cut. - As expected, this graph rises quickly in the beginning and then it flattens more and more as it gets closer to 100%:
 
 [![Cut Percentage Chart]({{ BASE_PATH }}/assets/images/mower-statistics/linegraphpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/linegraphpage.png)
+
+## Conclusion
+
+I do not consider this randomized cutting pattern to be *inefficient* since the grass on my lawn looks much better with a robotic lawn mower compared to how it looked before the robot mower.
+
+I performed these tests just to verify how much time the robotic lawn mower *really* needed to spend on cutting before it comes close to 100% coverage. - I do not plan to make any changes related to my mower since im very satisfied with it.
+
+As far as I can tell, the biggest issue with my data collection is that the GPS antenna isn't placed directly over the center of the cutting disc. This results in some errors, primarily when the performs its sharp turns. - The reason why the GPS antenna wasn't centered directly over the cutting disc was due to its weight.
+
+I used GPS hardware that I already owned from previous projects and the antenna along with the 10 000 mAh battery adds a lot of weight and that had some impact on the lawn mower when the weight was placed to far in the front, so I had to move it backwards around 10 cm to maintain traction.
