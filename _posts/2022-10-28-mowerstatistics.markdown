@@ -15,11 +15,11 @@ tags:
 - RTK-GPS
 ---
 
-How *inefficient* is a lawn mower that cuts on a randomized pattern? How many SQM does it mow before it succesfully mowes the whole lawn? - Let's find out!
+How *inefficient* is a lawn mower that cuts on a randomized pattern? How many square meters does it actually mow before it successfully mowed the whole lawn? - Let's find out!
 
 ## Introduction
 
-In this article I will use Real-Time Kinematic (RKT) GPS with centimeter level accuracy to track the movements our Husqvarna AutoMower 315 Mark II robotic mower and upload the data into a MongoDB Atlas database which in the end will provide me with the possibilites to visualise and graph how much time and area the robotic lawn mower need to cut before the whole lawn is cut at least once.
+In this solution, I will use Real-Time Kinematic (RKT) GPS with centimeter level accuracy to track the movements our Husqvarna AutoMower 315 Mark II robotic mower and upload the data into a MongoDB Atlas database which in the end will provide me with the possibilities to visualize and graph how much time and area the robotic lawn mower need to cut before the whole lawn is cut at least once.
 
 And the results? Look here:
 [![Animation]({{ BASE_PATH }}/assets/images/mower-statistics/animation.gif)]({{ BASE_PATH }}/assets/images/mower-statistics/animation.gif)
@@ -42,6 +42,8 @@ The receiving *MongoDB Atlas Function* is responsible for parsing the raw NMEA s
 
 [![Architecture]({{ BASE_PATH }}/assets/images/mower-statistics/components.png)]({{ BASE_PATH }}/assets/images/mower-statistics/components.png)
 
+The Lawn perimeter and the exclusions (staircase and trees) in it has all been mapped with the help of the same Ublox ZED-F9P, but connected to an Android phone running *SW MAPS*.
+
 ### What is RTK-GPS?
 
 This project relies heavily on the use of RTK-GPS/GNSS to get the accuracy needed in this situation where want to know if the mower cutting disc has passed a specific location or not. - So what is RTK-GPS and how does it compare with normal GPS?
@@ -51,7 +53,7 @@ RTK-GPS uses a reference signal which is transmitted from a fixed base-station t
 RTK-GPS explanation from Wikipedia:
 *In practice, RTK systems use a single base-station receiver and a number of mobile units. The base station re-broadcasts the phase of the carrier that it observes, and the mobile units compare their own phase measurements with the one received from the base station. ... RTK provides accuracy enhancements up to about 20 km from the base station.*
 
-*This allows the units to calculate their relative position to within millimeters, although their absolute position is accurate only to the same accuracy as the computed position of the base station. The typical nominal accuracy for these systems is 1 centimetre ± 2 parts-per-million (ppm) horizontally and 2 centimetres ± 2 ppm vertically.*
+*This allows the units to calculate their relative position to within millimeters, although their absolute position is accurate only to the same accuracy as the computed position of the base station. The typical nominal accuracy for these systems is 1 centimeter ± 2 parts-per-million (ppm) horizontally and 2 centimeters ± 2 ppm vertically.*
 
 *Although these parameters limit the usefulness of the RTK technique for general navigation, the technique is perfectly suited to roles like surveying. In this case, the base station is located at a known surveyed location, often a benchmark, and the mobile units can then produce a highly accurate map by taking fixes relative to that point. RTK has also found uses in autodrive/autopilot systems, precision farming, machine control systems and similar roles.*
 
