@@ -19,16 +19,16 @@ How *inefficient* is a lawn mower that cuts on a randomized pattern? How many sq
 
 ## Introduction
 
-In this solution, I will use Real-Time Kinematic (RKT) GPS with centimeter level accuracy to track the movements our Husqvarna AutoMower 315 Mark II robotic mower and upload the data into a MongoDB Atlas database which in the end will provide me with the possibilities to visualize and graph how much time and area the robotic lawn mower need to cut before the whole lawn is cut at least once.
+In this solution, I will use Real-Time Kinematic (RKT) GPS with centimeter level accuracy to track the movements our Husqvarna AutoMower 315 Mark II robotic mower and upload the data into a MongoDB Atlas database which in the end will provide me with the possibilities to visualize and graph how much time and area the robotic lawn mower need to cut before the whole lawn is mowed at least once.
 
-And the results? Look here:
+And the results?:
 [![Animation]({{ BASE_PATH }}/assets/images/mower-statistics/animation.gif)]({{ BASE_PATH }}/assets/images/mower-statistics/animation.gif)
 
 ## Solution overview
 
 To solve this task, multiple components and services has been used.
 
-First of all, RTK-GPS was a requirement from my side to provide the GPS/GNSS accuracy required for location data to be useful in this analysis. Standard GPS where meter-accuracy is achieved is not sufficient. RTK-GPS provides centimeter accuracy which is what I need in this case.
+First of all, RTK-GPS was a requirement from my side to provide the GPS/GNSS accuracy required for location data to be useful in this analysis. *Normal* GPS, where meter-accuracy is achieved is not sufficient in this scenario. RTK-GPS provides centimeter accuracy which is what I need in this case.
 
 I also needed a way to transport the RTK reference signal from my base station to the Mower which is considered as a *rover*. It turned out that my WiFi covered almost all of my lawn so I decided to go for WiFi for simplicity.
 
@@ -59,7 +59,7 @@ RTK-GPS explanation from Wikipedia:
 
 ### Mower
 
-The hardware was placed in a waterproof food container. Food containers are cheap, watertight and available in different sizes which makes them as a good option for DIY projects.s
+The hardware was placed in a waterproof food container. Food containers are cheap, watertight and available in many different sizes which makes them as a good option for DIY projects.
 
 [![Mower Hardware Installation]({{ BASE_PATH }}/assets/images/mower-statistics/mower.png)]({{ BASE_PATH }}/assets/images/mower-statistics/mower.png)
 
@@ -88,7 +88,7 @@ In this project, both CPU cores of the ESP32 are used to be able to execute the 
   * On a 10 second interval, get the *NMEA Buffer* and push it to the MongoDB HTTPS endpoint.
   * If WiFi or MongoDB is unreachable for whatever reason (poor WiFi coverage), then retry the *NMEA Buffer* at an interval and then bulk upload it once WiFi/MongoDB becomes available.
 
-More details on the software can be found in the github repo <LÄNK>.
+More details on the software can be found in the github repo [Mower RTK-GPS Rover](https://github.com/jh83/MowerGPSRover).
 
 ### MognoDB Atlas Cloud Services
 
