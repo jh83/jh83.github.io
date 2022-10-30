@@ -221,7 +221,7 @@ The database consists of two collections and one view:
 * A collection that holds all *assets*, such as the *mower* as well as the *lawn* geoJSON features.
 * A view that groups the time-series collection data on a per-day view.
 
-### Frontend
+### Web Frontend
 
 As stated earlier, the MongoDB *Web SDK* is used to handle the authentication to the MongoDB database and for all the reads/writes from/to the database.
 
@@ -233,7 +233,7 @@ At first, if the user isn't logged in then a login page is shown:
 
 After login, the user is prompted with the default page:
 
-[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/defaultpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/defaultpage.png)
+[![Default Page]({{ BASE_PATH }}/assets/images/mower-statistics/defaultpage.jpeg)]({{ BASE_PATH }}/assets/images/mower-statistics/defaultpage.jpeg)
 
 #### Settings
 
@@ -243,22 +243,26 @@ Mower settings can be managed:
 * *Cutting Width* is in centimeters and controls how wide the *path* will be drawn later. In this solution each pixel on the *canvas* is a 1x1 square centimeter.
 * *Start time* and *End time* is used as from/to time when querying the database.
 
-[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/mowerpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/mowerpage.png)
+[![Mower Settings Page]({{ BASE_PATH }}/assets/images/mower-statistics/mowerpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/mowerpage.png)
 
 Lawn settings can be managed:
 
 * Takes an *geoJSON features* object as input. A geoJSON features object can contain multiple *features* and the perimeter of the lawn must be the first object in the array. Additional *features* can be added to exclude areas for trees and stairs etc from the Lawn area. If "name: charging_station" is set on a geoJSON feature then this "point" will also be used as an *not geoWithin* input in the DB Query.
 
-[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/lawnpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/lawnpage.png)
+[![Lawn Settings Page]({{ BASE_PATH }}/assets/images/mower-statistics/lawnpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/lawnpage.png)
 
 #### Per day Statistics
 
-Once the desired days has been selected in the table, then it will loop thru each selected day and render it on a canvas (which by default is hidden) where the resolution is set so that each pixel represents 1x1 square centimeter. - When the hidden canvas has been fully drawn for one date, then a snapshot is taken from it and displayed in the *Per Day Statistics* section, and then it clears the canvas and continues with the next date:
+Once the desired days has been selected in the table, then it will loop thru each selected day and render it on a canvas (which by default is hidden) where the resolution is set so that each pixel represents 1x1 square centimeter.
 
-[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/perdaypage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/perdaypage.png)
+After the "path/track" has been drawn (red pixels) based on the Latitude/Longitude data points, then the number of *green pixels* on the canvas are counted and compared to the number of green pixels that existed before the path/track was drawn. - In this way we can determine how many square centimeters that are mowed (the pixels that now are red, and no longer green). The square cm represented by each pixel are then translated to square meters.
+
+When the hidden canvas has been fully drawn for one date, then a snapshot is taken from it and displayed in the *Per Day Statistics* section, and then it clears the canvas and continues with the next date:
+
+[![Per day Statistics]({{ BASE_PATH }}/assets/images/mower-statistics/perdaypage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/perdaypage.png)
 
 #### Cut Percentage Chart
 
 This line chart displays how many square meters that has been cut in total, and how many "unique" square meters that has been cut. - As expected, this graph rises quickly in the beginning and then it flattens more and more as it gets closer to 100%:
 
-[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/linegraphpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/linegraphpage.png)
+[![Cut Percentage Chart]({{ BASE_PATH }}/assets/images/mower-statistics/linegraphpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/linegraphpage.png)
