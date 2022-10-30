@@ -15,11 +15,11 @@ tags:
 - RTK-GPS
 ---
 
-How *inefficient* is a lawn mower that cuts on a randomized pattern? - Let's find out!
+How *inefficient* is a lawn mower that cuts on a randomized pattern? How many SQM does it mow before it succesfully mowes the whole lawn? - Let's find out!
 
 ## Introduction
 
-In this article I will use Real-Time Kinematic (RKT) GPS with centimeter level accuracy to track the movements our Husqvarna AutoMower 315 Mark II robotic mower and upload the data into a MongoDB Atlas database for further analysis and visualization.
+In this article I will use Real-Time Kinematic (RKT) GPS with centimeter level accuracy to track the movements our Husqvarna AutoMower 315 Mark II robotic mower and upload the data into a MongoDB Atlas database which in the end will provide me with the possibilites to visualise and graph how much time and area the robotic lawn mower need to cut before the whole lawn is cut at least once.
 
 And the results? Look here:
 [![Animation]({{ BASE_PATH }}/assets/images/mower-statistics/animation.gif)]({{ BASE_PATH }}/assets/images/mower-statistics/animation.gif)
@@ -57,30 +57,36 @@ RTK-GPS explanation from Wikipedia:
 
 ### Mower
 
-[![Mower Hardware]({{ BASE_PATH }}/assets/images/mower-statistics/mower.png)]({{ BASE_PATH }}/assets/images/mower-statistics/mower.png)
+The hardware was placed in a waterproof food container. Food containers are cheap, watertight and available in different sizes which makes them as a good option for DIY projects.s
+
+[![Mower Hardware Installation]({{ BASE_PATH }}/assets/images/mower-statistics/mower.png)]({{ BASE_PATH }}/assets/images/mower-statistics/mower.png)
 
 #### Hardware
+
+[![Mower Hardware]({{ BASE_PATH }}/assets/images/mower-statistics/mower_hardware.png)]({{ BASE_PATH }}/assets/images/mower-statistics/mower_hardware.png)
 
 The hardware placed on the mower consists of:
 
 * 10000 mAh powerbank. Is capable of powering the hardware for about 14-16 hours.
-* Ublox ZED-F9P GNSS module.
+* A drotek Ublox ZED-F9P GNSS module.
 * DA910 Multi-band GNSS Antenna
-* ESP32 as the "brain". It is responsible for:
+* Espressif ESP32 as the "brain". It is responsible for:
   * Getting the RTK reference signal from RTK2GO cloud service and sending it thru I2C to the Ublox ZED-F9P GNSS module.
   * Receive the NMEA *GNGGA* message from the ZED-F9P at 1 HZ and buffer it until next *uplink* to MongoDB.
   * Send the NMEA *buffer* to the HTTPS endpoint/Function in MongoDB Atlas.
 
 #### Software
 
-In this solution both CPU cores of the ESP32 are used to be able to execute tasks in parallel.
+In this project, both CPU cores of the ESP32 are used to be able to execute the tasks in parallel.
 
 * First core is responsible for:
-  * Connect and subscribe to the RTK-GNSS reference signal from the RTK2GO cloud service and push it to the ZED-F9P module thru I2C.
+  * Connect and subscribe to the RTK-GNSS reference signal from the RTK2GO *NTRIP Caster* cloud service and push it to the ZED-F9P module thru I2C.
   * Listen to the NMEA string output from the ZED-F9P which occurs at 1HZ and push it to the *NMEA Buffer*.
 * Second core is responsible for:
   * On a 10 second interval, get the *NMEA Buffer* and push it to the MongoDB HTTPS endpoint.
   * If WiFi or MongoDB is unreachable for whatever reason (poor WiFi coverage), then retry the *NMEA Buffer* at an interval and then bulk upload it once WiFi/MongoDB becomes available.
+
+More details on the software can be found in the github repo <LÄNK>.
 
 ### MognoDB Atlas Cloud Services
 
@@ -214,3 +220,43 @@ The database consists of two collections and one view:
 * A view that groups the time-series collection data on a per-day view.
 
 ### Frontend
+
+As stated earlier, the MongoDB *Web SDK* is used to handle the authentication to the MongoDB database and for all the reads/writes from/to the database.
+
+MongoDB has support for *geospatial query's*, meaning that we can perform queries based on Latitude/Longitude information. This functionality is used in a *geoWithin* combined with a *not* to exclude all data points for when the mower is parked in the charger.
+
+At first, if the user isn't logged in then a login page is shown:
+
+[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/loginpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/loginpage.png)
+
+After login, the user is prompted with the default page:
+
+[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/defaultpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/defaultpage.png)
+
+#### Settings
+
+Mower settings can be managed:
+
+* *Fabricator* and *Model Name* are both descriptor fields.
+* *Cutting Width* is in centimeters and controls how wide the *path* will be drawn later. In this solution each pixel on the *canvas* is a 1x1 square centimeter.
+* *Start time* and *End time* is used as from/to time when querying the database.
+
+[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/mowerpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/mowerpage.png)
+
+Lawn settings can be managed:
+
+* Takes an *geoJSON features* object as input. A geoJSON features object can contain multiple *features* and the perimeter of the lawn must be the first object in the array. Additional *features* can be added to exclude areas for trees and stairs etc from the Lawn area. If "name: charging_station" is set on a geoJSON feature then this "point" will also be used as an *not geoWithin* input in the DB Query.
+
+[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/lawnpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/lawnpage.png)
+
+#### Per day Statistics
+
+Once the desired days has been selected in the table, then it will loop thru each selected day and render it on a canvas (which by default is hidden) where the resolution is set so that each pixel represents 1x1 square centimeter. - When the hidden canvas has been fully drawn for one date, then a snapshot is taken from it and displayed in the *Per Day Statistics* section, and then it clears the canvas and continues with the next date:
+
+[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/perdaypage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/perdaypage.png)
+
+#### Cut Percentage Chart
+
+This line chart displays how many square meters that has been cut in total, and how many "unique" square meters that has been cut. - As expected, this graph rises quickly in the beginning and then it flattens more and more as it gets closer to 100%:
+
+[![Login Page]({{ BASE_PATH }}/assets/images/mower-statistics/linegraphpage.png)]({{ BASE_PATH }}/assets/images/mower-statistics/linegraphpage.png)
